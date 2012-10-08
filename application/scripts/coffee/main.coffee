@@ -6,8 +6,8 @@ require.config
       'exports': '_'
     'backbone':
       'deps': [
-        'lodash'
         'jquery'
+        'lodash'
       ]
       'exports': 'Backbone'
   paths:
@@ -15,7 +15,7 @@ require.config
     'backbone'            : '../vendor/backbone.0.9.2'
     'raphael'             : '../vendor/raphael.2.1.0.amd'
 
-    'cache'               : './cache'
+    'constatns'           : './constants'
 
     'GameEngine'          : './models/GameEngineModel'
     'SpaceShipModel'      : './models/SpaceShipModel'
@@ -25,18 +25,11 @@ require.config
 
 require [
   'jquery'
-  'cache'
   'GameEngine'
 ]
-, ($, cache, GameEngine) ->
-
-
-  cache.$window = $(window)
-  cache.height = cache.$window.height()
-  cache.width = cache.$window.width()
-  cache.$board = $('#board')
-  cache.$score = $('#score')
+, ($, GameEngine) ->
 
   gameEngine = new GameEngine()
   gameEngine.makeBoard()
   gameEngine.makeSpaceship()
+  gameEngine.startTime()

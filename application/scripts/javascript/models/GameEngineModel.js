@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['backbone', 'cache', 'BoardView', 'SpaceShipView', 'SpaceShipModel'], function (Backbone, cache, BoardView, SpaceShipView, SpaceShipModel) {
+  define(['backbone', 'BoardView', 'SpaceShipView', 'SpaceShipModel', 'constants'], function (Backbone, BoardView, SpaceShipView, SpaceShipModel, C) {
     var GameEngine;
     return GameEngine = (function (_super) {
 
@@ -23,22 +23,45 @@
         return GameEngine.__super__.constructor.apply(this, arguments);
       }
 
+      GameEngine.prototype.initialize = function () {
+        this.$window = $(window);
+        this.winHeight = this.$window.height();
+        this.winWidth = this.$window.width();
+        return this.$score = $('#score');
+      };
+
       GameEngine.prototype.makeBoard = function () {
-        return this.mBoardView = new BoardView();
+        return this.mBoardView = new BoardView(this.winWidth, this.winHeight);
       };
 
       GameEngine.prototype.makeSpaceship = function () {
-        var position;
-        this.mSpaceshipView = new SpaceShipView(this.mBoardView.paper());
+        var position, _this = this;
         position = {
-          x: cache.width / 2,
-          y: cache.height - 250
+          x: this.winWidth / 2,
+          y: this.winHeight - 250
         };
+        this.mSpaceshipView = new SpaceShipView(this.mBoardView.paper(), this.$window, this.winWidth);
+        this.mSpaceshipView.drawInitial(position);
+        $('#score').html("x: " + (Math.floor(position.x)) + ", y: " + (Math.floor(position.y)));
         this.mSpaceshipModel = new SpaceShipModel(position);
         this.mSpaceshipModel.on('change:position', function (model, newPosition) {
-          return this.mSpaceShipView.drawSelf(newPosition);
+          return _this.mSpaceshipView.drawSelf(newPosition);
         });
-        return this.mSpaceshipView.drawSelf(position);
+        return this.mSpaceshipView.on('change:position', function (newPosition) {
+          $('#score').html("x: " + (Math.floor(newPosition.x)) + ", y: " + (Math.floor(newPosition.y)));
+          return _this.mSpaceshipModel.move(newPosition);
+        });
+      };
+
+      GameEngine.prototype.redraw = function () {
+        return this.mSpaceshipView.checkPosition();
+      };
+
+      GameEngine.prototype.startTime = function () {
+        var _this = this;
+        return setInterval(function () {
+          return _this.redraw();
+        }, C.TICK);
       };
 
       return GameEngine;

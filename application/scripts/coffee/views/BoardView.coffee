@@ -2,24 +2,19 @@ define [
   'backbone'
   'jquery'
   'raphael'
-  'cache'
 ]
-, (Backbone, $, Raphael, cache) ->
+, (Backbone, $, Raphael) ->
 
   class BoardView extends Backbone.View
 
-    ###
-    el:
-      cache.$board
-    ###
+    el: $('#board')
 
-    initialize: ->
+    initialize: (@width, @height) ->
       @render()
 
 
     render: ->
-      # why doesn't cache.$board or $('#board') work here?
-      @mPaper = Raphael(document.getElementById('board'), cache.width, cache.height)
+      @mPaper = Raphael(@el, @width, @height)
 
     paper: ->
       @mPaper

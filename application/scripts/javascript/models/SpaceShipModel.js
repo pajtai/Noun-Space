@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['backbone'], function (Backbone) {
+  define(['backbone', 'constants'], function (Backbone, C) {
     var SpaceShipModel;
     return SpaceShipModel = (function (_super) {
 
@@ -26,6 +26,16 @@
       SpaceShipModel.prototype.initialize = function (position) {
         return this.set({
           'position': position
+        });
+      };
+
+      SpaceShipModel.prototype.move = function (position) {
+        position = this.get('position');
+        return this.set({
+          'position': {
+            'x': position.x,
+            'y': position.y
+          }
         });
       };
 

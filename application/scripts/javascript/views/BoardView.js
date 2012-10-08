@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['backbone', 'jquery', 'raphael', 'cache'], function (Backbone, $, Raphael, cache) {
+  define(['backbone', 'jquery', 'raphael'], function (Backbone, $, Raphael) {
     var BoardView;
     return BoardView = (function (_super) {
 
@@ -23,18 +23,16 @@
         return BoardView.__super__.constructor.apply(this, arguments);
       }
 
-/*
-          el:
-            cache.$board
-      */
+      BoardView.prototype.el = $('#board');
 
-
-      BoardView.prototype.initialize = function () {
+      BoardView.prototype.initialize = function (width, height) {
+        this.width = width;
+        this.height = height;
         return this.render();
       };
 
       BoardView.prototype.render = function () {
-        return this.mPaper = Raphael(document.getElementById('board'), cache.width, cache.height);
+        return this.mPaper = Raphael(this.el, this.width, this.height);
       };
 
       BoardView.prototype.paper = function () {
