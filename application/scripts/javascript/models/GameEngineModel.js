@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['backbone'], function (Backbone) {
+  define(['backbone', 'cache', 'BoardView', 'SpaceShipView', 'SpaceShipModel'], function (Backbone, cache, BoardView, SpaceShipView, SpaceShipModel) {
     var GameEngine;
     return GameEngine = (function (_super) {
 
@@ -22,6 +22,24 @@
       function GameEngine() {
         return GameEngine.__super__.constructor.apply(this, arguments);
       }
+
+      GameEngine.prototype.makeBoard = function () {
+        return this.mBoardView = new BoardView();
+      };
+
+      GameEngine.prototype.makeSpaceship = function () {
+        var position;
+        this.mSpaceshipView = new SpaceShipView(this.mBoardView.paper());
+        position = {
+          x: cache.width / 2,
+          y: cache.height - 250
+        };
+        this.mSpaceshipModel = new SpaceShipModel(position);
+        this.mSpaceshipModel.on('change:position', function (model, newPosition) {
+          return this.mSpaceShipView.drawSelf(newPosition);
+        });
+        return this.mSpaceshipView.drawSelf(position);
+      };
 
       return GameEngine;
 

@@ -20,10 +20,22 @@ require.config
     'GameEngine'          : './models/GameEngineModel'
     'SpaceShipModel'      : './models/SpaceShipModel'
 
+    'BoardView'           : './views/BoardView'
+    'SpaceShipView'       : './views/SpaceShipView'
+
 require [
+  'jquery'
+  'cache'
   'GameEngine'
 ]
-, (GameEngine) ->
+, ($, cache, GameEngine) ->
+
+
+  cache.$window = $(window)
+  cache.height = cache.$window.height()
+  cache.width = cache.$window.width()
+  cache.$board = $('#board')
+  cache.$score = $('#score')
 
   gameEngine = new GameEngine()
   gameEngine.makeBoard()

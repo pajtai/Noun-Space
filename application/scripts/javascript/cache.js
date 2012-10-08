@@ -1,9 +1,11 @@
 (function () {
 
   define({
-    $window: $(window),
-    $board: $('#board'),
-    $score: $('#score')
+    $window: false,
+    height: false,
+    width: false,
+    $board: false,
+    $score: false
   });
 
 }).call(this);

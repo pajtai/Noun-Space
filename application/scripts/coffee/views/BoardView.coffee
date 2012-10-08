@@ -1,17 +1,25 @@
 define [
   'backbone'
   'jquery'
+  'raphael'
   'cache'
 ]
-, (Backbone, $, cache) ->
+, (Backbone, $, Raphael, cache) ->
 
-  el: cache.$board
+  class BoardView extends Backbone.View
+
+    ###
+    el:
+      cache.$board
+    ###
 
     initialize: ->
       @render()
 
-    render: ->
-      dimensions = @getDimensions()
-      @paper = Raphael(@el, cache.$window.width, cache.$window.height)
 
-    # TODO: add window change size listener
+    render: ->
+      # why doesn't cache.$board or $('#board') work here?
+      @mPaper = Raphael(document.getElementById('board'), cache.width, cache.height)
+
+    paper: ->
+      @mPaper

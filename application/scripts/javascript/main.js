@@ -16,12 +16,19 @@
       'raphael': '../vendor/raphael.2.1.0.amd',
       'cache': './cache',
       'GameEngine': './models/GameEngineModel',
-      'SpaceShipModel': './models/SpaceShipModel'
+      'SpaceShipModel': './models/SpaceShipModel',
+      'BoardView': './views/BoardView',
+      'SpaceShipView': './views/SpaceShipView'
     }
   });
 
-  require(['GameEngine'], function (GameEngine) {
+  require(['jquery', 'cache', 'GameEngine'], function ($, cache, GameEngine) {
     var gameEngine;
+    cache.$window = $(window);
+    cache.height = cache.$window.height();
+    cache.width = cache.$window.width();
+    cache.$board = $('#board');
+    cache.$score = $('#score');
     gameEngine = new GameEngine();
     gameEngine.makeBoard();
     return gameEngine.makeSpaceship();

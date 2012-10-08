@@ -23,6 +23,12 @@
         return SpaceShipModel.__super__.constructor.apply(this, arguments);
       }
 
+      SpaceShipModel.prototype.initialize = function (position) {
+        return this.set({
+          'position': position
+        });
+      };
+
       return SpaceShipModel;
 
     })(Backbone.Model);
