@@ -1,0 +1,76 @@
+<!DOCTYPE html>  <html> <head>   <title>GameEngineModel.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="constants.html">                 constants.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                                           <a class="source" href="GameEngineModel.html">                 GameEngineModel.coffee               </a>                                           <a class="source" href="BoardView.html">                 BoardView.coffee               </a>                                           <a class="source" href="PlanetView.html">                 PlanetView.coffee               </a>                                           <a class="source" href="SpaceShipView.html">                 SpaceShipView.coffee               </a>                                           <a class="source" href="StarView.html">                 StarView.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               GameEngineModel.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">define</span> <span class="p">[</span>
+  <span class="s">&#39;backbone&#39;</span>
+  <span class="s">&#39;BoardView&#39;</span>
+  <span class="s">&#39;SpaceShipView&#39;</span>
+  <span class="s">&#39;PlanetView&#39;</span>
+  <span class="s">&#39;StarView&#39;</span>
+  <span class="s">&#39;constants&#39;</span>
+  <span class="s">&#39;lodash&#39;</span>
+  <span class="s">&#39;raphael&#39;</span>
+<span class="p">]</span>
+<span class="p">,</span> <span class="nf">(Backbone, BoardView, SpaceShipView, PlanetView, StarView, C, _, Raphael) -&gt;</span>
+
+  <span class="k">class</span> <span class="nx">GameEngine</span> <span class="k">extends</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span>
+
+    <span class="nv">starInterval: </span><span class="mi">10</span>
+    <span class="nv">enemyInterval: </span><span class="mi">60</span>
+
+    <span class="nv">initialize: </span><span class="o">-&gt;</span>
+      <span class="vi">@$window = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">)</span>
+      <span class="vi">@winHeight = </span><span class="nx">@$window</span><span class="p">.</span><span class="nx">height</span><span class="p">()</span>
+      <span class="vi">@winWidth = </span><span class="nx">@$window</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>TODO: pull score into raphael</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="vi">@$score = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#score&#39;</span><span class="p">)</span>
+      <span class="vi">@age = </span><span class="mi">0</span>
+      <span class="vi">@starTicker = </span><span class="mi">0</span>
+      <span class="vi">@enemyTicker = </span><span class="mi">0</span>
+      <span class="vi">@planets = </span><span class="mi">0</span>
+      <span class="vi">@planetViews = </span><span class="p">[]</span>
+
+    <span class="nv">makeBoard: </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>TODO: this should be a model</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="vi">@mBoardView = </span><span class="k">new</span> <span class="nx">BoardView</span><span class="p">(</span><span class="nx">@winWidth</span><span class="p">,</span> <span class="nx">@winHeight</span><span class="p">)</span>
+
+    <span class="nv">makeSpaceship: </span><span class="o">-&gt;</span>
+
+      <span class="nv">position =</span>
+        <span class="nv">x: </span><span class="nx">@winWidth</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="nv">y: </span><span class="nx">@winHeight</span> <span class="o">-</span> <span class="mi">250</span>
+
+      <span class="vi">@mSpaceshipView = </span><span class="k">new</span> <span class="nx">SpaceShipView</span><span class="p">(</span><span class="nx">@mBoardView</span><span class="p">.</span><span class="nx">paper</span><span class="p">(),</span> <span class="nx">@$window</span><span class="p">,</span> <span class="nx">@winWidth</span><span class="p">,</span> <span class="nx">position</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>TODO: create score view - that has vars separately</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">startTime: </span><span class="o">-&gt;</span>
+      <span class="vi">@ticker = </span><span class="nx">setInterval</span> <span class="o">=&gt;</span>
+        <span class="k">if</span> <span class="nx">@enemyTicker</span> <span class="o">is</span> <span class="nx">@enemyInterval</span>
+          <span class="vi">@enemyTicker = </span><span class="mi">0</span>
+          <span class="o">--</span><span class="nx">@enemyInterval</span>
+          <span class="nx">@createEnemy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nx">@starTicker</span> <span class="o">is</span> <span class="nx">@starInterval</span>
+          <span class="vi">@starTicker = </span><span class="mi">0</span>
+          <span class="nx">@createStar</span><span class="p">()</span>
+        <span class="nx">@checkForCollisions</span><span class="p">()</span>
+        <span class="o">++</span><span class="nx">@age</span>
+        <span class="o">++</span><span class="nx">@starTicker</span>
+        <span class="o">++</span><span class="nx">@enemyTicker</span>
+
+      <span class="p">,</span> <span class="nx">C</span><span class="p">.</span><span class="nx">TICK</span>
+
+    <span class="nv">createEnemy: </span><span class="nf">() -&gt;</span>
+      <span class="o">--</span><span class="nx">@easiness</span>
+      <span class="o">++</span><span class="nx">@planets</span>
+      <span class="nx">@showScore</span><span class="p">()</span>
+      <span class="nx">@planetViews</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">PlanetView</span><span class="p">(</span><span class="nx">@mBoardView</span><span class="p">.</span><span class="nx">paper</span><span class="p">(),</span> <span class="nx">@$window</span><span class="p">,</span> <span class="nx">@winWidth</span><span class="p">,</span> <span class="nx">@winHeight</span><span class="p">))</span>
+
+    <span class="nv">createStar: </span><span class="nf">() -&gt;</span>
+      <span class="k">new</span> <span class="nx">StarView</span><span class="p">(</span><span class="nx">@mBoardView</span><span class="p">.</span><span class="nx">paper</span><span class="p">(),</span> <span class="nx">@winWidth</span><span class="p">,</span> <span class="nx">@winHeight</span><span class="p">)</span>
+
+
+    <span class="nv">showScore: </span><span class="o">-&gt;</span>
+      <span class="nx">@$score</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="s">&quot;SCORE: </span><span class="si">#{</span><span class="nx">@planets</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+
+    <span class="nv">checkForCollisions: </span><span class="o">-&gt;</span>
+      <span class="nx">@checkCollision</span> <span class="nx">planet</span> <span class="k">for</span> <span class="nx">planet</span> <span class="k">in</span> <span class="nx">@planetViews</span>
+
+    <span class="nv">checkCollision: </span><span class="nf">(planet) -&gt;</span>
+      <span class="nv">planetBox = </span><span class="nx">planet</span><span class="p">.</span><span class="nx">getBBox</span><span class="p">()</span>
+      <span class="nv">spaceBox = </span><span class="nx">@mSpaceshipView</span><span class="p">.</span><span class="nx">getBBox</span><span class="p">()</span>
+      <span class="k">if</span> <span class="nx">planetBox</span><span class="o">?</span> <span class="o">and</span> <span class="nx">spaceBox</span><span class="o">?</span> <span class="o">and</span> <span class="nx">Raphael</span><span class="p">.</span><span class="nx">isBBoxIntersect</span><span class="p">(</span><span class="nx">planet</span><span class="p">.</span><span class="nx">getBBox</span><span class="p">(),</span> <span class="nx">@mSpaceshipView</span><span class="p">.</span><span class="nx">getBBox</span><span class="p">())</span>
+        <span class="nx">clearInterval</span> <span class="nx">@ticker</span>
+        <span class="nx">planet</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span> <span class="k">for</span> <span class="nx">planet</span> <span class="k">in</span> <span class="nx">@planetViews</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s">&quot;Game Over&quot;</span><span class="p">)</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
