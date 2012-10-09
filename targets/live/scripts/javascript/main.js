@@ -18,8 +18,7 @@
       'GameEngine': './models/GameEngineModel',
       'BoardView': './views/BoardView',
       'SpaceShipView': './views/SpaceShipView',
-      'PlanetView': './views/PlanetView',
-      'StarView': './views/StarView'
+      'PlanetView': './views/PlanetView'
     }
   });
 

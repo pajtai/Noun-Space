@@ -3,17 +3,13 @@ define [
   'BoardView'
   'SpaceShipView'
   'PlanetView'
-  'StarView'
   'constants'
   'lodash'
   'raphael'
 ]
-, (Backbone, BoardView, SpaceShipView, PlanetView, StarView, C, _, Raphael) ->
+, (Backbone, BoardView, SpaceShipView, PlanetView, C, _, Raphael) ->
 
   class GameEngine extends Backbone.Model
-
-    starInterval: 10
-    enemyInterval: 100
 
     initialize: ->
       @$window = $(window)
@@ -22,8 +18,6 @@ define [
       # TODO: pull score into raphael
       @$score = $('#score')
       @age = 0
-      @starTicker = 0
-      @enemyTicker = 0
       @planets = 0
       @planetViews = []
 
@@ -40,31 +34,21 @@ define [
       @mSpaceshipView = new SpaceShipView(@mBoardView.paper(), @$window, @winWidth, position)
       # TODO: create score view - that has vars separately
 
+
+
     startTime: ->
       @ticker = setInterval =>
-        if @enemyTicker is @enemyInterval
-          @enemyTicker = 0
-          --@enemyInterval
-          @createEnemy()
-        if @starTicker is @starInterval
-          @starTicker = 0
-          @createStar()
+        @createEnemy()
         @checkForCollisions()
         ++@age
-        ++@starTicker
-        ++@enemyTicker
-
       , C.TICK
 
-    createEnemy: () ->
-      --@easiness
-      ++@planets
-      @showScore()
-      @planetViews.push(new PlanetView(@mBoardView.paper(), @$window, @winWidth, @winHeight))
-
-    createStar: () ->
-      new StarView(@mBoardView.paper(), @winWidth, @winHeight)
-
+    createEnemy: ->
+      rand = _.random(0, 100)
+      if 0 is rand
+        ++@planets
+        @showScore()
+        @planetViews.push(new PlanetView(@mBoardView.paper(), @$window, @winWidth, @winHeight))
 
     showScore: ->
       @$score.html("SCORE: #{@planets}")

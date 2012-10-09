@@ -12,7 +12,6 @@ define [
     selfHeight: 63
 
     initialize: (@mPaper, @$window, @winWidth, @winHeight) ->
-      # TODO: make get starting position a mixin
       @position =
         x: _.random(0, @winWidth - @selfWidth)
         y: 0 - @selfHeight
@@ -24,11 +23,10 @@ define [
 
     fall: ->
       distance = @winHeight - @position.y
-      time = distance / (C.SPEED * 0.3)
+      time = distance / (C.SPEED * 0.5)
       goTo = @winHeight + @selfHeight
 
-      rotate = _.random(-90, 90)
-      @mSelf.animate({'y': goTo}, time, @fell)
+      @mSelf.animate({'y': goTo}, time, '<', @fell)
 
     fell: =>
       @mSelf.remove()

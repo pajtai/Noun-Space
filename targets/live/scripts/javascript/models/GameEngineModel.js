@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['backbone', 'BoardView', 'SpaceShipView', 'PlanetView', 'StarView', 'constants', 'lodash', 'raphael'], function (Backbone, BoardView, SpaceShipView, PlanetView, StarView, C, _, Raphael) {
+  define(['backbone', 'BoardView', 'SpaceShipView', 'PlanetView', 'constants', 'lodash', 'raphael'], function (Backbone, BoardView, SpaceShipView, PlanetView, C, _, Raphael) {
     var GameEngine;
     return GameEngine = (function (_super) {
 
@@ -23,18 +23,12 @@
         return GameEngine.__super__.constructor.apply(this, arguments);
       }
 
-      GameEngine.prototype.starInterval = 10;
-
-      GameEngine.prototype.enemyInterval = 100;
-
       GameEngine.prototype.initialize = function () {
         this.$window = $(window);
         this.winHeight = this.$window.height();
         this.winWidth = this.$window.width();
         this.$score = $('#score');
         this.age = 0;
-        this.starTicker = 0;
-        this.enemyTicker = 0;
         this.planets = 0;
         return this.planetViews = [];
       };
@@ -55,31 +49,20 @@
       GameEngine.prototype.startTime = function () {
         var _this = this;
         return this.ticker = setInterval(function () {
-          if (_this.enemyTicker === _this.enemyInterval) {
-            _this.enemyTicker = 0;
-            --_this.enemyInterval;
-            _this.createEnemy();
-          }
-          if (_this.starTicker === _this.starInterval) {
-            _this.starTicker = 0;
-            _this.createStar();
-          }
+          _this.createEnemy();
           _this.checkForCollisions();
-          ++_this.age;
-          ++_this.starTicker;
-          return ++_this.enemyTicker;
+          return ++_this.age;
         }, C.TICK);
       };
 
       GameEngine.prototype.createEnemy = function () {
-        --this.easiness;
-        ++this.planets;
-        this.showScore();
-        return this.planetViews.push(new PlanetView(this.mBoardView.paper(), this.$window, this.winWidth, this.winHeight));
-      };
-
-      GameEngine.prototype.createStar = function () {
-        return new StarView(this.mBoardView.paper(), this.winWidth, this.winHeight);
+        var rand;
+        rand = _.random(0, 100);
+        if (0 === rand) {
+          ++this.planets;
+          this.showScore();
+          return this.planetViews.push(new PlanetView(this.mBoardView.paper(), this.$window, this.winWidth, this.winHeight));
+        }
       };
 
       GameEngine.prototype.showScore = function () {

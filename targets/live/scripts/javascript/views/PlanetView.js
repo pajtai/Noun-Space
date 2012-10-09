@@ -51,14 +51,13 @@
       };
 
       PlanetView.prototype.fall = function () {
-        var distance, goTo, rotate, time;
+        var distance, goTo, time;
         distance = this.winHeight - this.position.y;
-        time = distance / (C.SPEED * 0.3);
+        time = distance / (C.SPEED * 0.5);
         goTo = this.winHeight + this.selfHeight;
-        rotate = _.random(-90, 90);
         return this.mSelf.animate({
           'y': goTo
-        }, time, this.fell);
+        }, time, '<', this.fell);
       };
 
       PlanetView.prototype.fell = function () {

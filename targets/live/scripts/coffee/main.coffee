@@ -22,7 +22,6 @@ require.config
     'BoardView'           : './views/BoardView'
     'SpaceShipView'       : './views/SpaceShipView'
     'PlanetView'          : './views/PlanetView'
-    'StarView'            : './views/StarView'
 
 require [
   'jquery'
