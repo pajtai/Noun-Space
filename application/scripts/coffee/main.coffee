@@ -18,10 +18,10 @@ require.config
     'constatns'           : './constants'
 
     'GameEngine'          : './models/GameEngineModel'
-    'SpaceShipModel'      : './models/SpaceShipModel'
 
     'BoardView'           : './views/BoardView'
     'SpaceShipView'       : './views/SpaceShipView'
+    'PlanetView'          : './views/PlanetView'
 
 require [
   'jquery'

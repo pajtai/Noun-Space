@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['backbone', 'BoardView', 'SpaceShipView', 'SpaceShipModel', 'constants'], function (Backbone, BoardView, SpaceShipView, SpaceShipModel, C) {
+  define(['backbone', 'BoardView', 'SpaceShipView', 'PlanetView', 'constants', 'lodash', 'raphael'], function (Backbone, BoardView, SpaceShipView, PlanetView, C, _, Raphael) {
     var GameEngine;
     return GameEngine = (function (_super) {
 
@@ -27,7 +27,10 @@
         this.$window = $(window);
         this.winHeight = this.$window.height();
         this.winWidth = this.$window.width();
-        return this.$score = $('#score');
+        this.$score = $('#score');
+        this.age = 0;
+        this.planets = 0;
+        return this.planetViews = [];
       };
 
       GameEngine.prototype.makeBoard = function () {
@@ -35,33 +38,61 @@
       };
 
       GameEngine.prototype.makeSpaceship = function () {
-        var position, _this = this;
+        var position;
         position = {
           x: this.winWidth / 2,
           y: this.winHeight - 250
         };
-        this.mSpaceshipView = new SpaceShipView(this.mBoardView.paper(), this.$window, this.winWidth);
-        this.mSpaceshipView.drawInitial(position);
-        $('#score').html("x: " + (Math.floor(position.x)) + ", y: " + (Math.floor(position.y)));
-        this.mSpaceshipModel = new SpaceShipModel(position);
-        this.mSpaceshipModel.on('change:position', function (model, newPosition) {
-          return _this.mSpaceshipView.drawSelf(newPosition);
-        });
-        return this.mSpaceshipView.on('change:position', function (newPosition) {
-          $('#score').html("x: " + (Math.floor(newPosition.x)) + ", y: " + (Math.floor(newPosition.y)));
-          return _this.mSpaceshipModel.move(newPosition);
-        });
-      };
-
-      GameEngine.prototype.redraw = function () {
-        return this.mSpaceshipView.checkPosition();
+        return this.mSpaceshipView = new SpaceShipView(this.mBoardView.paper(), this.$window, this.winWidth, position);
       };
 
       GameEngine.prototype.startTime = function () {
         var _this = this;
-        return setInterval(function () {
-          return _this.redraw();
+        return this.ticker = setInterval(function () {
+          _this.createEnemy();
+          _this.checkForCollisions();
+          return ++_this.age;
         }, C.TICK);
+      };
+
+      GameEngine.prototype.createEnemy = function () {
+        var rand;
+        rand = _.random(0, 100);
+        if (0 === rand) {
+          ++this.planets;
+          this.showScore();
+          return this.planetViews.push(new PlanetView(this.mBoardView.paper(), this.$window, this.winWidth, this.winHeight));
+        }
+      };
+
+      GameEngine.prototype.showScore = function () {
+        return this.$score.html("SCORE: " + this.planets);
+      };
+
+      GameEngine.prototype.checkForCollisions = function () {
+        var planet, _i, _len, _ref, _results;
+        _ref = this.planetViews;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          planet = _ref[_i];
+          _results.push(this.checkCollision(planet));
+        }
+        return _results;
+      };
+
+      GameEngine.prototype.checkCollision = function (planet) {
+        var planetBox, spaceBox, _i, _len, _ref;
+        planetBox = planet.getBBox();
+        spaceBox = this.mSpaceshipView.getBBox();
+        if ((planetBox != null) && (spaceBox != null) && Raphael.isBBoxIntersect(planet.getBBox(), this.mSpaceshipView.getBBox())) {
+          clearInterval(this.ticker);
+          _ref = this.planetViews;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            planet = _ref[_i];
+            planet.stop();
+          }
+          return alert("Game Over");
+        }
       };
 
       return GameEngine;

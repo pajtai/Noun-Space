@@ -16,9 +16,9 @@
       'raphael': '../vendor/raphael.2.1.0.amd',
       'constatns': './constants',
       'GameEngine': './models/GameEngineModel',
-      'SpaceShipModel': './models/SpaceShipModel',
       'BoardView': './views/BoardView',
-      'SpaceShipView': './views/SpaceShipView'
+      'SpaceShipView': './views/SpaceShipView',
+      'PlanetView': './views/PlanetView'
     }
   });
 
