@@ -24,9 +24,9 @@ module.exports = function(grunt) {
             any: '**/*',
 
             dot: {
-                coffee: '.coffee',
+                coffee:     '.coffee',
                 javascript: '.js',
-                html: '.html'
+                html:       '.html'
             }
 
         }
@@ -41,10 +41,9 @@ module.exports = function(grunt) {
                 appDocs:    project.dirs.dev    + project.files.docs,
                 docs:       project.dirs.docs,
                 liveMo:       project.dirs.live   + project.files.javascript + '/model',
-                liveMe:       project.dirs.live   + project.files.javascript + '/mediator',
                 liveVi:       project.dirs.live   + project.files.javascript + '/view',
                 coffee: project.dirs.live + project.files.coffee,
-                config: project.dirs.live + project.files.javascript + '/Config.js',
+                config: project.dirs.live + project.files.javascript + '/constants.js',
                 v1: project.dirs.live + project.files.vendor + '/backbone.0.9.2.js',
                 v2: project.dirs.live + project.files.vendor + '/eve.0.3.4.js',
                 v3: project.dirs.live + project.files.vendor + '/jquery.1.8.2.js',
@@ -86,15 +85,17 @@ module.exports = function(grunt) {
                         project.dirs.live + project.files.docs + '/docco.css'
                     ],
                     dest: project.dirs.live + project.files.docs + '/docco.css'
+                },
+                app: {
+                    src: [
+                        project.dirs.live + project.files.css + '/space.css'
+                    ],
+                    dest: project.dirs.live + project.files.css + '/space.css'
                 }
             },
 
             docco: {
                 coffee: project.dirs.dev + project.files.coffee + '/**/*.coffee'
-            },
-
-            usemin: {
-                html: [project.dirs.live + '/**/*.html']
             },
 
             // No need to install any plugins
@@ -149,7 +150,13 @@ module.exports = function(grunt) {
                     'jquery': '../vendor/require-jquery',
                     'lodash': '../vendor/lodash.0.7.0',
                     'backbone': '../vendor/backbone.0.9.2',
-                    'raphael': '../vendor/raphael.2.1.0.amd'
+                    'raphael': '../vendor/raphael.2.1.0.amd',
+                    'constants': './constants',
+                    'GameEngine': './models/GameEngineModel',
+                    'BoardView': './views/BoardView',
+                    'SpaceShipView': './views/SpaceShipView',
+                    'PlanetView': './views/PlanetView',
+                    'StarView': './views/StarView'
                 },
                 modules: [
                     {
@@ -181,7 +188,7 @@ module.exports = function(grunt) {
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee beautify';
     grunt.registerTask('developer', commonTasks);
-    grunt.registerTask('live',      commonTasks + ' requirejs cssmin usemin clean:liveMo clean:liveMe clean:liveVi clean:coffee clean:config clean:v1 clean:v2 clean:v3 clean:v4 clean:v5 clean:v6 clean:v7 clean:v8');
+    grunt.registerTask('live',      commonTasks + ' requirejs cssmin clean:liveMo clean:liveVi clean:coffee clean:config clean:v1 clean:v2 clean:v3 clean:v4 clean:v5 clean:v6 clean:v7 clean:v8');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
