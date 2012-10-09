@@ -13,7 +13,7 @@ define [
   class GameEngine extends Backbone.Model
 
     starInterval: 10
-    enemyInterval: 100
+    enemyInterval: 60
 
     initialize: ->
       @$window = $(window)

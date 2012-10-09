@@ -25,7 +25,7 @@
 
       GameEngine.prototype.starInterval = 10;
 
-      GameEngine.prototype.enemyInterval = 100;
+      GameEngine.prototype.enemyInterval = 60;
 
       GameEngine.prototype.initialize = function () {
         this.$window = $(window);
