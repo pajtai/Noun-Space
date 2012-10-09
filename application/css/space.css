@@ -14,15 +14,20 @@ html, body, div {
     border:0;
 }
 
-#score {
+#score, #credits {
     position:absolute;
+}
+
+#score {
     top:0;
     right:0;
 }
 
 #credits {
-    position:absolute;
-    z-index:9999;
     left:0;
     bottom:0;
+}
+
+#credits, a, img {
+    z-index:9999;
 }
