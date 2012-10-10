@@ -5,7 +5,7 @@ define [
 ]
 , (_, jaws, Speeds) ->
 
-  class Planet
+  class Planet extends jaws.Sprite
 
     constructor: (@viewport) ->
 
@@ -14,16 +14,14 @@ define [
         'y': 0
 
       @speed = Speeds.getSpeed('planet')
-      @self = jaws.Sprite
+
+      super
         'image' : 'img/planet.png'
         'x'     : position.x
         'y'     : position.y
 
-    draw: ->
-      @self.draw()
-
     fall: ->
-      @self.y += @speed
+      @y += @speed
 
     stop: ->
       @speed = 0

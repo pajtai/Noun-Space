@@ -52,7 +52,8 @@
       };
 
       GameEngine.prototype.createEnemies = function () {
-        if (0 === _.random(0, 300)) {
+        if (0 === _.random(0, 100)) {
+          console.log("new planet");
           return this.planets.push(new Planet(this.viewport));
         }
       };
@@ -75,9 +76,13 @@
       };
 
       GameEngine.prototype.checkForCollisions = function () {
+        var _this = this;
         return jaws.collideOneWithMany(this.ship, this.planets).forEach(function (planet) {
           planet.stop();
-          this.ship.stop();
+          _this.ship.stop();
+          jaws.switchGameState({
+            setup: jaws.context.clearRect(0, 0, jaws.width, jaws.height)
+          });
           return alert("GameOver");
         });
       };

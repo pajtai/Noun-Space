@@ -38,7 +38,8 @@ define [
         @ship.moveRight()
 
     createEnemies: ->
-      if (0 is _.random(0, 300))
+      if (0 is _.random(0, 100))
+        console.log("new planet")
         @planets.push(new Planet(@viewport))
 
     moveThings: ->
@@ -55,8 +56,10 @@ define [
       return outside
 
     checkForCollisions: () =>
-      jaws.collideOneWithMany(@ship, @planets).forEach (planet) ->
+      jaws.collideOneWithMany(@ship, @planets).forEach (planet) =>
         planet.stop()
         @ship.stop()
+        jaws.switchGameState
+          setup: jaws.context.clearRect(0, 0, jaws.width, jaws.height)
         alert("GameOver")
 
