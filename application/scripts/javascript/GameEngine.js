@@ -73,7 +73,7 @@
           planet = new Planet(this.viewport);
           this.viewport.forceInsideVisibleArea(planet, 1);
           this.planets.push(planet);
-          return this.scoreView.innerHTML = this.howManyPlanets * (this.difficulty + 1);
+          return this.scoreView.innerHTML = "SCORE: " + (this.howManyPlanets * (this.difficulty + 1)) + " - fps: " + jaws.game_loop.fps;
         }
       };
 

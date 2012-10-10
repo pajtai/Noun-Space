@@ -62,7 +62,7 @@ define [
         @viewport.forceInsideVisibleArea(planet, 1)
         @planets.push(planet)
 
-        @scoreView.innerHTML = @howManyPlanets * (@difficulty + 1)
+        @scoreView.innerHTML = "SCORE: #{@howManyPlanets * (@difficulty + 1)} - fps: #{jaws.game_loop.fps}"
 
     createStars: (rand) ->
       if (75 < rand < 100)
