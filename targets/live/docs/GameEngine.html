@@ -1,0 +1,85 @@
+<!DOCTYPE html>  <html> <head>   <title>GameEngine.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="GameEngine.html">                 GameEngine.coffee               </a>                                           <a class="source" href="Planet.html">                 Planet.coffee               </a>                                           <a class="source" href="Ship.html">                 Ship.coffee               </a>                                           <a class="source" href="SpeedPass.html">                 SpeedPass.coffee               </a>                                           <a class="source" href="Sprite.html">                 Sprite.coffee               </a>                                           <a class="source" href="Star.html">                 Star.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               GameEngine.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">define</span> <span class="p">[</span>
+  <span class="s">&#39;lodash&#39;</span>
+  <span class="s">&#39;jaws&#39;</span>
+  <span class="s">&#39;Ship&#39;</span>
+  <span class="s">&#39;Planet&#39;</span>
+  <span class="s">&#39;Star&#39;</span>
+<span class="p">]</span>
+<span class="p">,</span> <span class="nf">(_, jaws, Ship, Planet, Star) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>TODO: break jaws up into its individual mosules using AMD
+TODO: remove MAGIC NUMBERS!!!!!
+TODO: set better detection rectangle for spaceship and planets</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">class</span> <span class="nx">GameEngine</span>
+
+    <span class="nv">setup: </span><span class="o">-&gt;</span>
+      <span class="nx">jaws</span><span class="p">.</span><span class="nx">preventDefaultKeys</span><span class="p">([</span><span class="s">&quot;left&quot;</span><span class="p">,</span> <span class="s">&quot;right&quot;</span><span class="p">,</span> <span class="s">&quot;up&quot;</span><span class="p">,</span> <span class="s">&quot;down&quot;</span><span class="p">,</span> <span class="s">&quot;space&quot;</span><span class="p">])</span>
+      <span class="vi">@difficulty = </span><span class="mi">0</span>
+      <span class="vi">@levelUp = </span><span class="mi">0</span>
+      <span class="vi">@score = </span><span class="mi">0</span>
+      <span class="vi">@howManyPlanets = </span><span class="mi">0</span>
+      <span class="vi">@scoreView = </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s">&#39;score&#39;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>create the viewport</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="vi">@viewport = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">Viewport</span><span class="p">({</span><span class="nv">max_x: </span><span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nv">max_y: </span><span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span><span class="p">})</span>
+
+      <span class="vi">@ship = </span><span class="k">new</span> <span class="nx">Ship</span>
+        <span class="s">&#39;x&#39;</span><span class="o">:</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="s">&#39;y&#39;</span><span class="o">:</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">225</span>
+
+      <span class="vi">@planets = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
+      <span class="vi">@stars = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
+
+    <span class="nv">update: </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>make random number only once per update</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">rand = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+      <span class="nx">@handlePlayerInput</span><span class="p">()</span>
+      <span class="nx">@createEnemies</span><span class="p">(</span><span class="nx">rand</span><span class="p">)</span>
+      <span class="nx">@createStars</span><span class="p">(</span><span class="nx">rand</span><span class="p">)</span>
+      <span class="nx">@moveThings</span><span class="p">()</span>
+      <span class="nx">@checkForCollisions</span><span class="p">()</span>
+
+    <span class="nv">draw: </span><span class="o">-&gt;</span>
+      <span class="nx">jaws</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+      <span class="nx">@ship</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
+      <span class="nx">@planets</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
+      <span class="nx">@stars</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
+
+    <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s">&quot;left&quot;</span><span class="p">))</span>
+        <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">()</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s">&quot;right&quot;</span><span class="p">))</span>
+        <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">()</span>
+
+    <span class="nv">createEnemies: </span><span class="nf">(rand) -&gt;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="nx">rand</span> <span class="o">&lt;=</span> <span class="nx">@difficulty</span><span class="p">)</span>
+        <span class="o">++</span><span class="nx">@levelUp</span>
+        <span class="o">++</span><span class="nx">@howManyPlanets</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">@levelUp</span> <span class="o">is</span> <span class="mi">5</span><span class="p">)</span>
+          <span class="vi">@levelUp = </span><span class="mi">0</span>
+          <span class="o">++</span><span class="nx">@difficulty</span>
+
+        <span class="nv">planet = </span><span class="k">new</span> <span class="nx">Planet</span><span class="p">(</span><span class="nx">@viewport</span><span class="p">)</span>
+        <span class="nx">@viewport</span><span class="p">.</span><span class="nx">forceInsideVisibleArea</span><span class="p">(</span><span class="nx">planet</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nx">@planets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">planet</span><span class="p">)</span>
+
+        <span class="vi">@scoreView.innerHTML = </span><span class="nx">@howManyPlanets</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@difficulty</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nv">createStars: </span><span class="nf">(rand) -&gt;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="mi">75</span> <span class="o">&lt;</span> <span class="nx">rand</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="nv">star = </span><span class="k">new</span> <span class="nx">Star</span><span class="p">(</span><span class="nx">@viewport</span><span class="p">)</span>
+        <span class="nx">@viewport</span><span class="p">.</span><span class="nx">forceInsideVisibleArea</span><span class="p">(</span><span class="nx">star</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nx">@stars</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">star</span><span class="p">)</span>
+
+    <span class="nv">moveThings: </span><span class="o">-&gt;</span>
+      <span class="nx">@planets</span><span class="p">.</span><span class="nx">forEach</span> <span class="nf">(planet) -&gt;</span>
+        <span class="nx">planet</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">()</span>
+      <span class="nx">@planets</span><span class="p">.</span><span class="nx">removeIf</span><span class="p">(</span><span class="nx">@isOutside</span><span class="p">)</span>
+      <span class="nx">@stars</span><span class="p">.</span><span class="nx">forEach</span> <span class="nf">(star) -&gt;</span>
+        <span class="nx">star</span><span class="p">.</span><span class="nx">moveDown</span><span class="p">()</span>
+      <span class="nx">@stars</span><span class="p">.</span><span class="nx">removeIf</span><span class="p">(</span><span class="nx">@isOutside</span><span class="p">)</span>
+
+    <span class="nv">isOutside: </span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">@viewport</span><span class="p">.</span><span class="nx">isOutside</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+
+    <span class="nv">checkForCollisions: </span><span class="p">()</span> <span class="o">=&gt;</span>
+      <span class="nx">jaws</span><span class="p">.</span><span class="nx">collideOneWithMany</span><span class="p">(</span><span class="nx">@ship</span><span class="p">,</span> <span class="nx">@planets</span><span class="p">).</span><span class="nx">forEach</span> <span class="p">(</span><span class="nx">planet</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">planet</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+        <span class="nx">@ship</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+        <span class="nx">jaws</span><span class="p">.</span><span class="nx">switchGameState</span>
+          <span class="nv">setup: </span><span class="nx">jaws</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s">&quot;GameOver&quot;</span><span class="p">)</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

@@ -40,10 +40,7 @@ module.exports = function(grunt) {
                 developer:  project.dirs.dev    + project.files.javascript,
                 appDocs:    project.dirs.dev    + project.files.docs,
                 docs:       project.dirs.docs,
-                liveMo:       project.dirs.live   + project.files.javascript + '/model',
-                liveVi:       project.dirs.live   + project.files.javascript + '/view',
                 coffee: project.dirs.live + project.files.coffee,
-                config: project.dirs.live + project.files.javascript + '/constants.js',
                 v1: project.dirs.live + project.files.vendor + '/jaws.js'
             },
 
@@ -131,7 +128,9 @@ module.exports = function(grunt) {
                 //the code minified by UglifyJS.
                 //optimize: "none",
                 paths: {
-                    'jquery': '../vendor/jaws',
+                    'jquery':  '../vendor/require-jquery',
+                    'lodash': '../vendor/lodash.0.7.0',
+                    'jaws': '../vendor/jaws'
                 },
                 modules: [
                     {
@@ -163,7 +162,7 @@ module.exports = function(grunt) {
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee beautify';
     grunt.registerTask('developer', commonTasks);
-    grunt.registerTask('live',      commonTasks + ' requirejs cssmin clean:liveMo clean:liveVi clean:coffee clean:config clean:v1');
+    grunt.registerTask('live',      commonTasks + ' requirejs cssmin clean:coffee clean:v1');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
