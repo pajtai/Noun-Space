@@ -1,9 +1,14 @@
 (function () {
 
   require.config({
+    shim: {
+      'lodash': {
+        'exports': '_'
+      }
+    },
     paths: {
-      'jaws': '../vendor/jaws',
-      'GameEngine': './models/GameEngine'
+      'lodash': '../vendor/lodash.0.7.0',
+      'jaws': '../vendor/jaws'
     }
   });
 

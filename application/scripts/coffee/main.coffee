@@ -1,7 +1,14 @@
 require.config
+  # The shim config allows us to configure dependencies for
+  # scripts that do not call _define()_ to register a module
+  shim:
+    'lodash':
+      'exports': '_'
+
   paths:
+    'lodash'      : '../vendor/lodash.0.7.0'
     'jaws'        : '../vendor/jaws'
-    'GameEngine'  : './models/GameEngine'
+
 
 require [
   'jaws'
