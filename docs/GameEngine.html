@@ -55,7 +55,7 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
         <span class="nx">@viewport</span><span class="p">.</span><span class="nx">forceInsideVisibleArea</span><span class="p">(</span><span class="nx">planet</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="nx">@planets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">planet</span><span class="p">)</span>
 
-        <span class="vi">@scoreView.innerHTML = </span><span class="nx">@howManyPlanets</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@difficulty</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="vi">@scoreView.innerHTML = </span><span class="s">&quot;SCORE: </span><span class="si">#{</span><span class="nx">@howManyPlanets</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@difficulty</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s"> - fps: </span><span class="si">#{</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">game_loop</span><span class="p">.</span><span class="nx">fps</span><span class="si">}</span><span class="s">&quot;</span>
 
     <span class="nv">createStars: </span><span class="nf">(rand) -&gt;</span>
       <span class="k">if</span> <span class="p">(</span><span class="mi">75</span> <span class="o">&lt;</span> <span class="nx">rand</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>

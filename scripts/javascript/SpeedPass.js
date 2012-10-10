@@ -1,1 +1,0 @@
-(function(){define({speeds:function(){var e;return e=6,{ship:e,planet:e/2,star:e/3}}(),getSpeed:function(e){return this.speeds[e]}})}).call(this)
