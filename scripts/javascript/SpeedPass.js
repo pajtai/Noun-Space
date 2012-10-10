@@ -1,18 +1,1 @@
-(function () {
-
-  define({
-    speeds: (function () {
-      var baseSpeed;
-      baseSpeed = 6;
-      return {
-        ship: baseSpeed,
-        planet: baseSpeed / 2,
-        star: baseSpeed / 3
-      };
-    })(),
-    getSpeed: function (entity) {
-      return this.speeds[entity];
-    }
-  });
-
-}).call(this);
+(function(){define({speeds:function(){var e;return e=6,{ship:e,planet:e/2,star:e/3}}(),getSpeed:function(e){return this.speeds[e]}})}).call(this)
