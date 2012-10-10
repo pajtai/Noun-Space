@@ -29,7 +29,7 @@
         size = _.random(1, 30);
         starScale = size / 30;
         starAlpha = size / 50;
-        this.speed = Speeds.getSpeed('planet') / (size / 10);
+        this.speed = Speeds.getSpeed('planet') * size / 50;
         Star.__super__.constructor.call(this, {
           'image': 'img/star.png',
           'x': position.x,

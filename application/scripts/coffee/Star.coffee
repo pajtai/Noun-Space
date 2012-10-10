@@ -19,7 +19,7 @@ define [
       starScale = size / 30
       starAlpha = size / 50
 
-      @speed = Speeds.getSpeed('planet') / (size / 10)
+      @speed = Speeds.getSpeed('planet') * size / 50
 
       super
         'image' : 'img/star.png'
