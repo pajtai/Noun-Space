@@ -3,10 +3,11 @@
   define({
     speeds: (function () {
       var baseSpeed;
-      baseSpeed = 5;
+      baseSpeed = 6;
       return {
         ship: baseSpeed,
-        planet: baseSpeed / 2
+        planet: baseSpeed / 2,
+        star: baseSpeed / 3
       };
     })(),
     getSpeed: function (entity) {

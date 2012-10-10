@@ -13,7 +13,7 @@
       return child;
       };
 
-  define(['jaws', 'SpeedPass'], function (jaws, Speeds) {
+  define(['Sprite', 'SpeedPass'], function (Sprite, Speeds) {
     var Ship;
     return Ship = (function (_super) {
 
@@ -28,21 +28,9 @@
         });
       }
 
-      Ship.prototype.moveLeft = function () {
-        return this.x -= this.speed;
-      };
-
-      Ship.prototype.moveRight = function () {
-        return this.x += this.speed;
-      };
-
-      Ship.prototype.stop = function () {
-        return this.speed = 0;
-      };
-
       return Ship;
 
-    })(jaws.Sprite);
+    })(Sprite);
   });
 
 }).call(this);

@@ -14,28 +14,32 @@
       };
 
   define(['lodash', 'Sprite', 'SpeedPass'], function (_, Sprite, Speeds) {
-    var Planet;
-    return Planet = (function (_super) {
+    var Star;
+    return Star = (function (_super) {
 
-      __extends(Planet, _super);
+      __extends(Star, _super);
 
-      function Planet(viewport) {
-        var position;
+      function Star(viewport) {
+        var position, size, starAlpha, starScale;
         this.viewport = viewport;
         position = {
           'x': _.random(0, Sprite.prototype.jaws.width),
           'y': 0
         };
-        this.speed = Speeds.getSpeed('planet');
-        Planet.__super__.constructor.call(this, {
-          'image': 'img/planet.png',
+        size = _.random(1, 30);
+        starScale = size / 30;
+        starAlpha = size / 50;
+        this.speed = Speeds.getSpeed('planet') / (size / 10);
+        Star.__super__.constructor.call(this, {
+          'image': 'img/star.png',
           'x': position.x,
-          'y': position.y
+          'y': position.y,
+          'alpha': starAlpha
         });
-        this.scale(_.random(75, 100) / 100);
+        this.scale(starScale);
       }
 
-      return Planet;
+      return Star;
 
     })(Sprite);
   });

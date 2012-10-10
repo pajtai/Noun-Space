@@ -22,6 +22,7 @@ require [
     # Loading the necessary images into JAWS
     jaws.assets.add("img/planet.png")
     jaws.assets.add("img/rocket.png")
+    jaws.assets.add("img/star.png")
 
     # utility method to load all assets, etc.
     # send options to jaws to with a canvas the size of the screen

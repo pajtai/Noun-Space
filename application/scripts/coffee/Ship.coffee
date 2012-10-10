@@ -1,11 +1,10 @@
 define [
-  'jaws'
+  'Sprite'
   'SpeedPass'
 ]
-, (jaws, Speeds) ->
+, (Sprite, Speeds) ->
 
-  # TODO: create base class, w stop e.g.
-  class Ship extends jaws.Sprite
+  class Ship extends Sprite
 
     constructor: (position) ->
 
@@ -15,12 +14,3 @@ define [
         'image' : 'img/rocket.png'
         'x'     : position.x
         'y'     : position.y
-
-    moveLeft: ->
-      @x -= @speed
-
-    moveRight: ->
-      @x += @speed
-
-    stop: ->
-      @speed = 0

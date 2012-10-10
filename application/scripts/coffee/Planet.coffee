@@ -1,16 +1,16 @@
 define [
   'lodash'
-  'jaws'
+  'Sprite'
   'SpeedPass'
 ]
-, (_, jaws, Speeds) ->
+, (_, Sprite, Speeds) ->
 
-  class Planet extends jaws.Sprite
+  class Planet extends Sprite
 
     constructor: (@viewport) ->
 
       position =
-        'x': _.random(0, jaws.width)
+        'x': _.random(0, Sprite::jaws.width)
         'y': 0
 
       @speed = Speeds.getSpeed('planet')
@@ -20,8 +20,4 @@ define [
         'x'     : position.x
         'y'     : position.y
 
-    fall: ->
-      @y += @speed
-
-    stop: ->
-      @speed = 0
+      @scale(_.random(75, 100) / 100)

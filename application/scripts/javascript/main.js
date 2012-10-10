@@ -17,6 +17,7 @@
       jaws.width = 1000;
       jaws.assets.add("img/planet.png");
       jaws.assets.add("img/rocket.png");
+      jaws.assets.add("img/star.png");
       return jaws.start(GameEngine, {
         'width': window.innerWidth,
         'height': window.innerHeight
