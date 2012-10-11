@@ -6,8 +6,9 @@ define [
   'Star'
   'GameOver'
   'Bullet'
+  'Explosion'
 ]
-, (_, jaws, Ship, Planet, Star, GameOver, Bullet) ->
+, (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion) ->
 
   # TODO: break jaws up into its individual mosules using AMD
   # TODO: remove MAGIC NUMBERS!!!!!
@@ -28,10 +29,13 @@ define [
       @ship = new Ship
         'x': jaws.width / 2
         'y': jaws.height - 225
+        , @viewport
+
 
       @planets = new jaws.SpriteList
       @stars = new jaws.SpriteList
       @bullets = new jaws.SpriteList
+      @explosions = new jaws.SpriteList
 
     update: ->
       # make random number only once per update
@@ -48,6 +52,7 @@ define [
       @planets.draw()
       @stars.draw()
       @bullets.draw()
+      @explosions.draw()
 
     handlePlayerInput: ->
       if(jaws.pressed("left"))
@@ -89,7 +94,10 @@ define [
         planet = new Planet(@viewport)
         @planets.push(planet)
 
-        @scoreView.innerHTML = "SCORE: #{@howManyPlanets * (@difficulty + 1)} - fps: #{jaws.game_loop.fps}"
+        @showScore()
+
+    showScore: ->
+      @scoreView.innerHTML = "SCORE: #{@howManyPlanets * (@difficulty + 1)} - fps: #{jaws.game_loop.fps}"
 
     createStars: (rand) ->
       if (75 < rand < 100)
@@ -98,7 +106,7 @@ define [
 
     moveThings: ->
       @planets.forEach (planet) ->
-        planet.moveDown()
+        planet.moveIt()
       @planets.removeIf(@isOutside)
       @stars.forEach (star) ->
         star.moveDown()
@@ -106,9 +114,15 @@ define [
       @bullets.forEach (bullet) ->
         bullet.moveIt()
       @bullets.removeIf(@isOutside)
+      @explosions.forEach (explosion) ->
+        explosion.moveIt()
+      @explosions.removeIf(@explosionCheck)
 
     isOutside: (item) =>
       @viewport.isOutside(item)
+
+    explosionCheck: (explosion) =>
+      explosion.removeMe()
 
     checkForCollisions: () =>
       jaws.collideOneWithMany(@ship, @planets).forEach (planet) =>
@@ -117,9 +131,18 @@ define [
         jaws.switchGameState GameOver
 
       jaws.collideManyWithMany(@bullets, @planets).forEach (pair) =>
-        console.log(pair)
         bullet = pair[0]
         planet = pair[1]
+
+        explosion = new Explosion
+          'x': planet.x
+          'y': planet.y
+
+        @explosions.push explosion
+
         @bullets.remove bullet
         @planets.remove planet
+
+        @howManyPlanets += 1
+        @showScore()
 

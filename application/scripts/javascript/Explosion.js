@@ -14,26 +14,32 @@
       };
 
   define(['Sprite', 'SpeedPass'], function (Sprite, Speeds) {
-    var Bullet;
-    return Bullet = (function (_super) {
+    var Explosion;
+    return Explosion = (function (_super) {
 
-      __extends(Bullet, _super);
+      __extends(Explosion, _super);
 
-      function Bullet(position) {
+      function Explosion(position) {
+        this.progress = 0;
         this.speed = Speeds.getSpeed('bullet');
-        Bullet.__super__.constructor.call(this, {
-          'image': 'img/bullet.png',
+        Explosion.__super__.constructor.call(this, {
+          'image': 'img/explosion.png',
           'x': position.x,
           'y': position.y
         });
-        this.scale(0.5);
+        this.selfScale = 0.5;
+        this.scale(this.selfScale);
       }
 
-      Bullet.prototype.moveIt = function () {
-        return this.y -= this.speed;
+      Explosion.prototype.moveIt = function () {
+        return this.alpha -= 0.01;
       };
 
-      return Bullet;
+      Explosion.prototype.removeMe = function () {
+        return this.alpha < 0;
+      };
+
+      return Explosion;
 
     })(Sprite);
   });

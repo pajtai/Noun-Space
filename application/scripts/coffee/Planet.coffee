@@ -14,6 +14,7 @@ define [
         'y': 0
 
       @speed = Speeds.getSpeed('planet')
+      @horizontalSpeed = _.random(-10, 10) / 10
 
       super
         'image' : 'img/planet.png'
@@ -22,3 +23,9 @@ define [
 
       @scale(_.random(75, 100) / 100)
       @viewport.forceInsideVisibleArea(@, 1)
+
+    moveIt: ->
+      @moveDown()
+      @x += @horizontalSpeed
+
+

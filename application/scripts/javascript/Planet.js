@@ -27,6 +27,7 @@
           'y': 0
         };
         this.speed = Speeds.getSpeed('planet');
+        this.horizontalSpeed = _.random(-10, 10) / 10;
         Planet.__super__.constructor.call(this, {
           'image': 'img/planet.png',
           'x': position.x,
@@ -35,6 +36,11 @@
         this.scale(_.random(75, 100) / 100);
         this.viewport.forceInsideVisibleArea(this, 1);
       }
+
+      Planet.prototype.moveIt = function () {
+        this.moveDown();
+        return this.x += this.horizontalSpeed;
+      };
 
       return Planet;
 

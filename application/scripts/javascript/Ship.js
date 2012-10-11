@@ -19,7 +19,8 @@
 
       __extends(Ship, _super);
 
-      function Ship(position) {
+      function Ship(position, viewport) {
+        this.viewport = viewport;
         this.speed = Speeds.getSpeed('ship');
         Ship.__super__.constructor.call(this, {
           'image': 'img/rocket.png',
@@ -27,6 +28,27 @@
           'y': position.y
         });
       }
+
+      Ship.prototype.moveLeft = function () {
+        Ship.__super__.moveLeft.call(this);
+        return this.moveInside();
+      };
+
+      Ship.prototype.moveRight = function () {
+        Ship.__super__.moveRight.call(this);
+        return this.moveInside();
+      };
+
+      Ship.prototype.moveInside = function () {
+        var adj;
+        adj = 85;
+        if (this.viewport.isLeftOf(this)) {
+          this.viewport.forceInside(this, 0);
+        }
+        if (this.x > Sprite.prototype.jaws.width - adj) {
+          return this.x = Sprite.prototype.jaws.width - adj;
+        }
+      };
 
       return Ship;
 

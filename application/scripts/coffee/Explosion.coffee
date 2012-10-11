@@ -4,18 +4,23 @@ define [
 ]
 , (Sprite, Speeds) ->
 
-  class Bullet extends Sprite
+  class Explosion extends Sprite
 
     constructor: (position) ->
 
+      @progress = 0
       @speed = Speeds.getSpeed('bullet')
 
       super
-        'image' : 'img/bullet.png'
+        'image' : 'img/explosion.png'
         'x'           : position.x
         'y'           : position.y
 
-      @scale(0.5)
+      @selfScale = 0.5
+      @scale(@selfScale)
 
     moveIt: ->
-      @y -= @speed
+      @alpha -= 0.01
+
+    removeMe: ->
+      @alpha < 0
