@@ -47,6 +47,9 @@ module.exports = function(grunt) {
                 d4: project.dirs.live + project.files.javascript + '/SpeedPass.js',
                 d5: project.dirs.live + project.files.javascript + '/Sprite.js',
                 d6: project.dirs.live + project.files.javascript + '/Star.js',
+                d7: project.dirs.live + project.files.javascript + '/Explosion.js',
+                d8: project.dirs.live + project.files.javascript + '/Bullet.js',
+                d9: project.dirs.live + project.files.javascript + '/GameOver.js',
                 v1: project.dirs.live + project.files.vendor + '/jaws.js',
                 v2: project.dirs.live + project.files.vendor + '/lodash.0.7.0.js'
             },
@@ -169,7 +172,7 @@ module.exports = function(grunt) {
     // The main tasks.
     commonTasks = 'clean:developer clean:appDocs clean:docs docco cp:docs coffee beautify';
     grunt.registerTask('developer', commonTasks);
-    grunt.registerTask('live',      commonTasks + ' requirejs cssmin clean:coffee clean:v1 clean:v2 clean:d1 clean:d2 clean:d3 clean:d4 clean:d5 clean:d6');
+    grunt.registerTask('live',      commonTasks + ' requirejs cssmin clean:coffee clean:v1 clean:v2 clean:d1 clean:d2 clean:d3 clean:d4 clean:d5 clean:d6 clean:d7 clean:d8 clean:d9');
 
     grunt.registerTask('reloadServer', 'server reload watch');
 };
