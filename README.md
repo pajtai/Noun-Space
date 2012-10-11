@@ -9,8 +9,6 @@ _Peter Ajtai - [MIT Licencse](https://raw.github.com/pajtai/Noun-Space/master/MI
 
 Straight forward space shooter using icons from [The Noun Project](http://thenounproject.com/)
 
-Note: **No shooting yet :(**
-
 ### Attributions
 
 * [Rocket](http://thenounproject.com/noun/rocket/#icon-No2539)
