@@ -11,6 +11,7 @@ define
       ship: baseSpeed
       planet: baseSpeed / 2
       star: baseSpeed / 3
+      bullet: baseSpeed * 2
     }
 
   )()

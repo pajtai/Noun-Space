@@ -14,29 +14,26 @@
       };
 
   define(['lodash', 'Sprite', 'SpeedPass'], function (_, Sprite, Speeds) {
-    var Planet;
-    return Planet = (function (_super) {
+    var Bullet;
+    return Bullet = (function (_super) {
 
-      __extends(Planet, _super);
+      __extends(Bullet, _super);
 
-      function Planet(viewport) {
-        var position;
-        this.viewport = viewport;
-        position = {
-          'x': _.random(0, Sprite.prototype.jaws.width),
-          'y': 0
-        };
-        this.speed = Speeds.getSpeed('planet');
-        Planet.__super__.constructor.call(this, {
-          'image': 'img/planet.png',
+      function Bullet(position) {
+        this.speed = Speeds.getSpeed('bullet');
+        Bullet.__super__.constructor.call(this, {
+          'image': 'img/bullet.png',
           'x': position.x,
           'y': position.y
         });
-        this.scale(_.random(75, 100) / 100);
-        this.viewport.forceInsideVisibleArea(this, 1);
+        this.scale(0.5);
       }
 
-      return Planet;
+      Bullet.prototype.moveIt = function () {
+        return this.y -= this.speed;
+      };
+
+      return Bullet;
 
     })(Sprite);
   });

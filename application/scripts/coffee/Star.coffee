@@ -28,3 +28,4 @@ define [
         'alpha'       : starAlpha
 
       @scale(starScale)
+      @viewport.forceInsideVisibleArea(@, 1)

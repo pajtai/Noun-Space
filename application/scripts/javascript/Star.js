@@ -37,6 +37,7 @@
           'alpha': starAlpha
         });
         this.scale(starScale);
+        this.viewport.forceInsideVisibleArea(this, 1);
       }
 
       return Star;

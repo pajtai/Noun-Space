@@ -21,3 +21,4 @@ define [
         'y'     : position.y
 
       @scale(_.random(75, 100) / 100)
+      @viewport.forceInsideVisibleArea(@, 1)

@@ -5,7 +5,7 @@
     };
   };
 
-  define(['lodash', 'jaws', 'Ship', 'Planet', 'Star'], function (_, jaws, Ship, Planet, Star) {
+  define(['lodash', 'jaws', 'Ship', 'Planet', 'Star', 'GameOver', 'Bullet'], function (_, jaws, Ship, Planet, Star, GameOver, Bullet) {
     var GameEngine;
     return GameEngine = (function () {
 
@@ -22,6 +22,7 @@
         this.levelUp = 0;
         this.score = 0;
         this.howManyPlanets = 0;
+        this.canShoot = true;
         this.scoreView = document.getElementById('score');
         this.viewport = new jaws.Viewport({
           max_x: jaws.width,
@@ -32,7 +33,8 @@
           'y': jaws.height - 225
         });
         this.planets = new jaws.SpriteList;
-        return this.stars = new jaws.SpriteList;
+        this.stars = new jaws.SpriteList;
+        return this.bullets = new jaws.SpriteList;
       };
 
       GameEngine.prototype.update = function () {
@@ -49,7 +51,8 @@
         jaws.context.clearRect(0, 0, jaws.width, jaws.height);
         this.ship.draw();
         this.planets.draw();
-        return this.stars.draw();
+        this.stars.draw();
+        return this.bullets.draw();
       };
 
       GameEngine.prototype.handlePlayerInput = function () {
@@ -57,8 +60,32 @@
           this.ship.moveLeft();
         }
         if (jaws.pressed("right")) {
-          return this.ship.moveRight();
+          this.ship.moveRight();
         }
+        if (jaws.pressed("space")) {
+          return this.shoot();
+        }
+      };
+
+      GameEngine.prototype.shoot = function () {
+        var bullet1, bullet2, _this = this;
+        if (!this.canShoot) {
+          return;
+        }
+        this.canShoot = false;
+        setTimeout(function () {
+          return _this.canShoot = true;
+        }, 500);
+        bullet1 = new Bullet({
+          'x': this.ship.x + 3,
+          'y': this.ship.y
+        });
+        this.bullets.push(bullet1);
+        bullet2 = new Bullet({
+          'x': this.ship.x + 72,
+          'y': this.ship.y
+        });
+        return this.bullets.push(bullet2);
       };
 
       GameEngine.prototype.createEnemies = function (rand) {
@@ -71,7 +98,6 @@
             ++this.difficulty;
           }
           planet = new Planet(this.viewport);
-          this.viewport.forceInsideVisibleArea(planet, 1);
           this.planets.push(planet);
           return this.scoreView.innerHTML = "SCORE: " + (this.howManyPlanets * (this.difficulty + 1)) + " - fps: " + jaws.game_loop.fps;
         }
@@ -81,7 +107,6 @@
         var star;
         if ((75 < rand && rand < 100)) {
           star = new Star(this.viewport);
-          this.viewport.forceInsideVisibleArea(star, 1);
           return this.stars.push(star);
         }
       };
@@ -94,7 +119,11 @@
         this.stars.forEach(function (star) {
           return star.moveDown();
         });
-        return this.stars.removeIf(this.isOutside);
+        this.stars.removeIf(this.isOutside);
+        this.bullets.forEach(function (bullet) {
+          return bullet.moveIt();
+        });
+        return this.bullets.removeIf(this.isOutside);
       };
 
       GameEngine.prototype.isOutside = function (item) {
@@ -103,13 +132,18 @@
 
       GameEngine.prototype.checkForCollisions = function () {
         var _this = this;
-        return jaws.collideOneWithMany(this.ship, this.planets).forEach(function (planet) {
+        jaws.collideOneWithMany(this.ship, this.planets).forEach(function (planet) {
           planet.stop();
           _this.ship.stop();
-          jaws.switchGameState({
-            setup: jaws.context.clearRect(0, 0, jaws.width, jaws.height)
-          });
-          return alert("GameOver");
+          return jaws.switchGameState(GameOver);
+        });
+        return jaws.collideManyWithMany(this.bullets, this.planets).forEach(function (pair) {
+          var bullet, planet;
+          console.log(pair);
+          bullet = pair[0];
+          planet = pair[1];
+          _this.bullets.remove(bullet);
+          return _this.planets.remove(planet);
         });
       };
 

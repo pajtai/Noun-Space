@@ -13,10 +13,11 @@
   });
 
   require(['jaws', 'GameEngine'], function (jaws, GameEngine) {
-    jaws.width = 1000;
     jaws.assets.add("img/planet.png");
     jaws.assets.add("img/rocket.png");
     jaws.assets.add("img/star.png");
+    jaws.assets.add("img/explosion.png");
+    jaws.assets.add("img/bullet.png");
     return jaws.start(GameEngine, {
       'width': window.innerWidth,
       'height': window.innerHeight

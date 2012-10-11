@@ -16,7 +16,6 @@ require [
 ]
 , (jaws, GameEngine) ->
 
-  jaws.width = 1000
   # Loading the necessary images into JAWS
   jaws.assets.add("img/planet.png")
   jaws.assets.add("img/rocket.png")
