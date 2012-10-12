@@ -65,12 +65,12 @@ define [
 
         startX = 0
         startTime = 0
-        touch = "ontouchend" in document
+        touch = 'ontouchstart' in document.documentElement
         startEvent = if touch then 'touchstart' else 'mousedown'
         moveEvent = if touch then 'touchmove' else 'mousemove'
         endEvent = if touch then 'touchend' else 'mouseup'
 
-        target = $('canvas')
+        target = $('body')
 
         target.bind startEvent, (e) ->
           # prevent image drag (Firefox)

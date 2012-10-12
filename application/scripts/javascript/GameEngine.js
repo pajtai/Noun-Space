@@ -76,11 +76,11 @@
           maxDistance = 50;
           startX = 0;
           startTime = 0;
-          touch = __indexOf.call(document, "ontouchend") >= 0;
+          touch = __indexOf.call(document.documentElement, 'ontouchstart') >= 0;
           startEvent = touch ? 'touchstart' : 'mousedown';
           moveEvent = touch ? 'touchmove' : 'mousemove';
           endEvent = touch ? 'touchend' : 'mouseup';
-          target = $('canvas');
+          target = $('body');
           target.bind(startEvent, function (e) {
             e.preventDefault();
             startTime = e.timeStamp;
