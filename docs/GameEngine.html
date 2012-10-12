@@ -51,42 +51,43 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nx">@explosions</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
 
     <span class="nv">bindSwipe: </span><span class="o">-&gt;</span>
-      <span class="nv">maxTime = </span><span class="mi">1000</span>
-      <span class="nv">maxDistance = </span><span class="mi">50</span>
+      <span class="nx">$</span> <span class="o">=&gt;</span>
+        <span class="nv">maxTime = </span><span class="mi">1000</span>
+        <span class="nv">maxDistance = </span><span class="mi">50</span>
 
 
-      <span class="nv">startX = </span><span class="mi">0</span>
-      <span class="nv">startTime = </span><span class="mi">0</span>
-      <span class="nv">touch = </span><span class="s">&quot;ontouchend&quot;</span> <span class="k">in</span> <span class="nb">document</span>
-      <span class="nv">startEvent = </span><span class="k">if</span> <span class="nx">touch</span> <span class="k">then</span> <span class="s">&#39;touchstart&#39;</span> <span class="k">else</span> <span class="s">&#39;mousedown&#39;</span>
-      <span class="nv">moveEvent = </span><span class="k">if</span> <span class="nx">touch</span> <span class="k">then</span> <span class="s">&#39;touchmove&#39;</span> <span class="k">else</span> <span class="s">&#39;mousemove&#39;</span>
-      <span class="nv">endEvent = </span><span class="k">if</span> <span class="nx">touch</span> <span class="k">then</span> <span class="s">&#39;touchend&#39;</span> <span class="k">else</span> <span class="s">&#39;mouseup&#39;</span>
-
-      <span class="nv">target = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;canvas&#39;</span><span class="p">)</span>
-
-      <span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">startEvent</span><span class="p">,</span> <span class="nf">(e) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>prevent image drag (Firefox)</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-        <span class="nv">startTime = </span><span class="nx">e</span><span class="p">.</span><span class="nx">timeStamp</span>
-        <span class="nv">startX = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span> <span class="k">else</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
-
-      <span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">endEvent</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
-        <span class="nv">startTime = </span><span class="mi">0</span>
         <span class="nv">startX = </span><span class="mi">0</span>
+        <span class="nv">startTime = </span><span class="mi">0</span>
+        <span class="nv">touch = </span><span class="s">&quot;ontouchend&quot;</span> <span class="k">in</span> <span class="nb">document</span>
+        <span class="nv">startEvent = </span><span class="k">if</span> <span class="nx">touch</span> <span class="k">then</span> <span class="s">&#39;touchstart&#39;</span> <span class="k">else</span> <span class="s">&#39;mousedown&#39;</span>
+        <span class="nv">moveEvent = </span><span class="k">if</span> <span class="nx">touch</span> <span class="k">then</span> <span class="s">&#39;touchmove&#39;</span> <span class="k">else</span> <span class="s">&#39;mousemove&#39;</span>
+        <span class="nv">endEvent = </span><span class="k">if</span> <span class="nx">touch</span> <span class="k">then</span> <span class="s">&#39;touchend&#39;</span> <span class="k">else</span> <span class="s">&#39;mouseup&#39;</span>
 
-      <span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">moveEvent</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="nv">target = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;canvas&#39;</span><span class="p">)</span>
 
-        <span class="nv">currentX = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span> <span class="k">else</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
+        <span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">startEvent</span><span class="p">,</span> <span class="nf">(e) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>prevent image drag (Firefox)</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+          <span class="nv">startTime = </span><span class="nx">e</span><span class="p">.</span><span class="nx">timeStamp</span>
+          <span class="nv">startX = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span> <span class="k">else</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
 
-        <span class="nv">direction = </span><span class="k">if</span> <span class="p">(</span><span class="nx">startX</span> <span class="o">is</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="nx">currentX</span> <span class="o">-</span> <span class="nx">startX</span><span class="p">)</span>
+        <span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">endEvent</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
+          <span class="nv">startTime = </span><span class="mi">0</span>
+          <span class="nv">startX = </span><span class="mi">0</span>
 
-        <span class="k">if</span> <span class="nx">direction</span> <span class="o">&gt;</span> <span class="mi">0</span>
-          <span class="vi">@swiping = </span><span class="s">&#39;right&#39;</span>
+        <span class="nx">target</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">moveEvent</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
 
-        <span class="k">if</span> <span class="nx">direction</span> <span class="o">&lt;</span> <span class="mi">0</span>
-          <span class="vi">@swiping = </span><span class="s">&#39;left&#39;</span>
+          <span class="nv">currentX = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span> <span class="k">else</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
 
-        <span class="k">if</span> <span class="nx">direction</span> <span class="o">==</span> <span class="mi">0</span>
-          <span class="vi">@swiping = </span><span class="kc">false</span>
+          <span class="nv">direction = </span><span class="k">if</span> <span class="p">(</span><span class="nx">startX</span> <span class="o">is</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="nx">currentX</span> <span class="o">-</span> <span class="nx">startX</span><span class="p">)</span>
+
+          <span class="k">if</span> <span class="nx">direction</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="vi">@swiping = </span><span class="s">&#39;right&#39;</span>
+
+          <span class="k">if</span> <span class="nx">direction</span> <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="vi">@swiping = </span><span class="s">&#39;left&#39;</span>
+
+          <span class="k">if</span> <span class="nx">direction</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="vi">@swiping = </span><span class="kc">false</span>
 
 
 
