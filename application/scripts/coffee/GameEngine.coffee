@@ -58,45 +58,45 @@ define [
       @explosions.draw()
 
     bindSwipe: ->
-      maxTime = 1000
-      maxDistance = 50
+      $ =>
+        maxTime = 1000
+        maxDistance = 50
 
 
-      startX = 0
-      startTime = 0
-      touch = "ontouchend" in document
-      startEvent = if touch then 'touchstart' else 'mousedown'
-      moveEvent = if touch then 'touchmove' else 'mousemove'
-      endEvent = if touch then 'touchend' else 'mouseup'
-
-      target = $('body')
-
-      target.bind startEvent, (e) ->
-        console.log("staaaart")
-        # prevent image drag (Firefox)
-        e.preventDefault()
-        startTime = e.timeStamp
-        startX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
-
-      target.bind endEvent, (e) ->
-        startTime = 0
         startX = 0
+        startTime = 0
+        touch = "ontouchend" in document
+        startEvent = if touch then 'touchstart' else 'mousedown'
+        moveEvent = if touch then 'touchmove' else 'mousemove'
+        endEvent = if touch then 'touchend' else 'mouseup'
 
-      target.bind moveEvent, (e) =>
-        e.preventDefault();
+        target = $('canvas')
 
-        currentX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+        target.bind startEvent, (e) ->
+          # prevent image drag (Firefox)
+          e.preventDefault()
+          startTime = e.timeStamp
+          startX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
 
-        direction = if (startX is 0) then 0 else (currentX - startX)
+        target.bind endEvent, (e) ->
+          startTime = 0
+          startX = 0
 
-        if direction > 0
-          @swiping = 'right'
+        target.bind moveEvent, (e) =>
+          e.preventDefault();
 
-        if direction < 0
-          @swiping = 'left'
+          currentX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
 
-        if direction == 0
-          @swiping = false
+          direction = if (startX is 0) then 0 else (currentX - startX)
+
+          if direction > 0
+            @swiping = 'right'
+
+          if direction < 0
+            @swiping = 'left'
+
+          if direction == 0
+            @swiping = false
 
 
 

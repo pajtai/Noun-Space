@@ -69,40 +69,42 @@
       };
 
       GameEngine.prototype.bindSwipe = function () {
-        var endEvent, maxDistance, maxTime, moveEvent, startEvent, startTime, startX, target, touch, _this = this;
-        maxTime = 1000;
-        maxDistance = 50;
-        startX = 0;
-        startTime = 0;
-        touch = __indexOf.call(document, "ontouchend") >= 0;
-        startEvent = touch ? 'touchstart' : 'mousedown';
-        moveEvent = touch ? 'touchmove' : 'mousemove';
-        endEvent = touch ? 'touchend' : 'mouseup';
-        target = $('body');
-        target.bind(startEvent, function (e) {
-          console.log("staaaart");
-          e.preventDefault();
-          startTime = e.timeStamp;
-          return startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
-        });
-        target.bind(endEvent, function (e) {
+        var _this = this;
+        return $(function () {
+          var endEvent, maxDistance, maxTime, moveEvent, startEvent, startTime, startX, target, touch;
+          maxTime = 1000;
+          maxDistance = 50;
+          startX = 0;
           startTime = 0;
-          return startX = 0;
-        });
-        return target.bind(moveEvent, function (e) {
-          var currentX, direction;
-          e.preventDefault();
-          currentX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
-          direction = startX === 0 ? 0 : currentX - startX;
-          if (direction > 0) {
-            _this.swiping = 'right';
-          }
-          if (direction < 0) {
-            _this.swiping = 'left';
-          }
-          if (direction === 0) {
-            return _this.swiping = false;
-          }
+          touch = __indexOf.call(document, "ontouchend") >= 0;
+          startEvent = touch ? 'touchstart' : 'mousedown';
+          moveEvent = touch ? 'touchmove' : 'mousemove';
+          endEvent = touch ? 'touchend' : 'mouseup';
+          target = $('canvas');
+          target.bind(startEvent, function (e) {
+            e.preventDefault();
+            startTime = e.timeStamp;
+            return startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+          });
+          target.bind(endEvent, function (e) {
+            startTime = 0;
+            return startX = 0;
+          });
+          return target.bind(moveEvent, function (e) {
+            var currentX, direction;
+            e.preventDefault();
+            currentX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+            direction = startX === 0 ? 0 : currentX - startX;
+            if (direction > 0) {
+              _this.swiping = 'right';
+            }
+            if (direction < 0) {
+              _this.swiping = 'left';
+            }
+            if (direction === 0) {
+              return _this.swiping = false;
+            }
+          });
         });
       };
 
