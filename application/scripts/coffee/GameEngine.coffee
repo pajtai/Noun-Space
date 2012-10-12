@@ -7,8 +7,9 @@ define [
   'GameOver'
   'Bullet'
   'Explosion'
+  'jquery'
 ]
-, (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion) ->
+, (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion, $) ->
 
   # TODO: break jaws up into its individual mosules using AMD
   # TODO: remove MAGIC NUMBERS!!!!!
@@ -17,6 +18,7 @@ define [
 
     setup: ->
       jaws.preventDefaultKeys(["left", "right", "up", "down", "space"])
+      @bindSwipe()
       @difficulty = 0
       @levelUp = 0
       @score = 0
@@ -31,6 +33,7 @@ define [
         'y': jaws.height - 225
         , @viewport
 
+      @swiping = false
 
       @planets = new jaws.SpriteList
       @stars = new jaws.SpriteList
@@ -54,12 +57,55 @@ define [
       @bullets.draw()
       @explosions.draw()
 
+    bindSwipe: ->
+      maxTime = 1000
+      maxDistance = 50
+
+
+      startX = 0
+      startTime = 0
+      touch = "ontouchend" in document
+      startEvent = if touch then 'touchstart' else 'mousedown'
+      moveEvent = if touch then 'touchmove' else 'mousemove'
+      endEvent = if touch then 'touchend' else 'mouseup'
+
+      target = $('body')
+
+      target.bind startEvent, (e) ->
+        console.log("staaaart")
+        # prevent image drag (Firefox)
+        e.preventDefault()
+        startTime = e.timeStamp
+        startX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+
+      target.bind endEvent, (e) ->
+        startTime = 0
+        startX = 0
+
+      target.bind moveEvent, (e) =>
+        e.preventDefault();
+
+        currentX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+
+        direction = if (startX is 0) then 0 else (currentX - startX)
+
+        if direction > 0
+          @swiping = 'right'
+
+        if direction < 0
+          @swiping = 'left'
+
+        if direction == 0
+          @swiping = false
+
+
+
     handlePlayerInput: ->
-      if(jaws.pressed("left"))
+      if(jaws.pressed("left") or (@swiping == 'left'))
         @ship.moveLeft()
-      if(jaws.pressed("right"))
+      if(jaws.pressed("right") or (@swiping == 'right'))
         @ship.moveRight()
-      if(jaws.pressed("space"))
+      if(jaws.pressed("space") or @swiping)
         @shoot()
 
     shoot: ->

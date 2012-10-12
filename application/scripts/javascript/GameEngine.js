@@ -3,9 +3,16 @@
     return function () {
       return fn.apply(me, arguments);
     };
-  };
+  },
+      __indexOf = [].indexOf ||
+      function (item) {
+      for (var i = 0, l = this.length; i < l; i++) {
+        if (i in this && this[i] === item) return i;
+      }
+      return -1;
+      };
 
-  define(['lodash', 'jaws', 'Ship', 'Planet', 'Star', 'GameOver', 'Bullet', 'Explosion'], function (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion) {
+  define(['lodash', 'jaws', 'Ship', 'Planet', 'Star', 'GameOver', 'Bullet', 'Explosion', 'jquery'], function (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion, $) {
     var GameEngine;
     return GameEngine = (function () {
 
@@ -20,6 +27,7 @@
 
       GameEngine.prototype.setup = function () {
         jaws.preventDefaultKeys(["left", "right", "up", "down", "space"]);
+        this.bindSwipe();
         this.difficulty = 0;
         this.levelUp = 0;
         this.score = 0;
@@ -34,6 +42,7 @@
           'x': jaws.width / 2,
           'y': jaws.height - 225
         }, this.viewport);
+        this.swiping = false;
         this.planets = new jaws.SpriteList;
         this.stars = new jaws.SpriteList;
         this.bullets = new jaws.SpriteList;
@@ -59,14 +68,52 @@
         return this.explosions.draw();
       };
 
+      GameEngine.prototype.bindSwipe = function () {
+        var endEvent, maxDistance, maxTime, moveEvent, startEvent, startTime, startX, target, touch, _this = this;
+        maxTime = 1000;
+        maxDistance = 50;
+        startX = 0;
+        startTime = 0;
+        touch = __indexOf.call(document, "ontouchend") >= 0;
+        startEvent = touch ? 'touchstart' : 'mousedown';
+        moveEvent = touch ? 'touchmove' : 'mousemove';
+        endEvent = touch ? 'touchend' : 'mouseup';
+        target = $('body');
+        target.bind(startEvent, function (e) {
+          console.log("staaaart");
+          e.preventDefault();
+          startTime = e.timeStamp;
+          return startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+        });
+        target.bind(endEvent, function (e) {
+          startTime = 0;
+          return startX = 0;
+        });
+        return target.bind(moveEvent, function (e) {
+          var currentX, direction;
+          e.preventDefault();
+          currentX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+          direction = startX === 0 ? 0 : currentX - startX;
+          if (direction > 0) {
+            _this.swiping = 'right';
+          }
+          if (direction < 0) {
+            _this.swiping = 'left';
+          }
+          if (direction === 0) {
+            return _this.swiping = false;
+          }
+        });
+      };
+
       GameEngine.prototype.handlePlayerInput = function () {
-        if (jaws.pressed("left")) {
+        if (jaws.pressed("left") || (this.swiping === 'left')) {
           this.ship.moveLeft();
         }
-        if (jaws.pressed("right")) {
+        if (jaws.pressed("right") || (this.swiping === 'right')) {
           this.ship.moveRight();
         }
-        if (jaws.pressed("space")) {
+        if (jaws.pressed("space") || this.swiping) {
           return this.shoot();
         }
       };
