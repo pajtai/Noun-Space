@@ -58,45 +58,42 @@ define [
       @explosions.draw()
 
     bindSwipe: ->
-      $ =>
-        maxTime = 1000
-        maxDistance = 50
+
+      maxTime = 1000
+      maxDistance = 50
 
 
-        startX = 0
+      startX = 0
+      startTime = 0
+
+
+      target = $('body')
+
+      target.on 'touchstart mousedown', (e) ->
+        # prevent image drag (Firefox)
+        e.preventDefault()
+        startTime = e.timeStamp
+        startX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+
+      target.on 'touchend mouseup touchcancel', (e) ->
         startTime = 0
-        touch = 'ontouchstart' in document.documentElement
-        startEvent = if touch then 'touchstart' else 'mousedown'
-        moveEvent = if touch then 'touchmove' else 'mousemove'
-        endEvent = if touch then 'touchend' else 'mouseup'
+        startX = 0
 
-        target = $('body')
+      target.on 'touchmove mousemove', (e) =>
+        e.preventDefault();
 
-        target.bind startEvent, (e) ->
-          # prevent image drag (Firefox)
-          e.preventDefault()
-          startTime = e.timeStamp
-          startX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+        currentX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
 
-        target.bind endEvent, (e) ->
-          startTime = 0
-          startX = 0
+        direction = if (startX is 0) then 0 else (currentX - startX)
 
-        target.bind moveEvent, (e) =>
-          e.preventDefault();
+        if direction > 0
+          @swiping = 'right'
 
-          currentX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+        if direction < 0
+          @swiping = 'left'
 
-          direction = if (startX is 0) then 0 else (currentX - startX)
-
-          if direction > 0
-            @swiping = 'right'
-
-          if direction < 0
-            @swiping = 'left'
-
-          if direction == 0
-            @swiping = false
+        if direction == 0
+          @swiping = false
 
 
 
