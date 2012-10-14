@@ -1,1 +1,1 @@
-body{background-color:#000;color:#FFF;overflow:hidden}a{color:#FFF}html,body,div{padding:0;margin:0;border:0}#score,#credits{position:absolute}#score{top:0;right:0}#credits{left:0;bottom:0}#credits,a,img{z-index:9999}
+body{background-color:#000;color:#FFF;overflow:hidden}a{color:#FFF}html,body,div{padding:0;margin:0;border:0}#score,#credits{position:absolute}#score{top:0;right:0;color:#0C0;font-size:16px}#credits{left:0;bottom:0;font-size:12px}#credits,a,img{z-index:9999}

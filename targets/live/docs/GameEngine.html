@@ -90,7 +90,7 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nx">@stars</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
       <span class="nx">@bullets</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
       <span class="nx">@explosions</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
-      <span class="k">if</span> <span class="nx">@textLocation</span> <span class="o">&lt;</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span>
+      <span class="k">if</span> <span class="nx">@textLocation</span> <span class="o">&lt;</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span> <span class="o">and</span> <span class="o">not</span> <span class="err">@</span><span class="p">.</span><span class="nx">noInstructions</span>
         <span class="nx">@showInstructions</span><span class="p">()</span>
 
     <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
@@ -171,6 +171,7 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nx">jaws</span><span class="p">.</span><span class="nx">collideOneWithMany</span><span class="p">(</span><span class="nx">@ship</span><span class="p">,</span> <span class="nx">@planets</span><span class="p">).</span><span class="nx">forEach</span> <span class="p">(</span><span class="nx">planet</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">planet</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
         <span class="nx">@ship</span><span class="p">.</span><span class="nx">stop</span><span class="p">()</span>
+        <span class="nv">GameEngine.prototype.noInstructions = </span><span class="kc">true</span>
         <span class="nx">jaws</span><span class="p">.</span><span class="nx">switchGameState</span> <span class="nx">GameOver</span>
 
       <span class="nx">jaws</span><span class="p">.</span><span class="nx">collideManyWithMany</span><span class="p">(</span><span class="nx">@bullets</span><span class="p">,</span> <span class="nx">@planets</span><span class="p">).</span><span class="nx">forEach</span> <span class="p">(</span><span class="nx">pair</span><span class="p">)</span> <span class="o">=&gt;</span>
