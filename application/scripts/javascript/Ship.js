@@ -19,8 +19,6 @@
 
       __extends(Ship, _super);
 
-      Ship.adj = 85;
-
       function Ship(position, viewport) {
         this.viewport = viewport;
         this.speed = Speeds.getSpeed('ship');
@@ -50,8 +48,8 @@
         if (this.viewport.isLeftOf(this)) {
           this.viewport.forceInside(this, 0);
         }
-        if (this.x > Sprite.prototype.jaws.width - this.adj) {
-          return this.x = Sprite.prototype.jaws.width - this.adj;
+        if (this.x > Sprite.prototype.jaws.width - 85) {
+          return this.x = Sprite.prototype.jaws.width - 85;
         }
       };
 
