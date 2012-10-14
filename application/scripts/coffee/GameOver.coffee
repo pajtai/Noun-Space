@@ -29,5 +29,5 @@ define [
       jaws.context.fillStyle = "Green"
       jaws.context.strokeStyle =  "rgba(200,200,200,0.0)"
       jaws.context.fillText("Game Over!", 60, 180)
-      jaws.context.fillText("Hit Enter to play again", 60, 280)
+      jaws.context.fillText("Enter or tap plays again", 60, 280)
 
