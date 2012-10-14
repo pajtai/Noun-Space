@@ -6,6 +6,8 @@ define [
 
   class Ship extends Sprite
 
+    @adj = 85
+
     constructor: (position, @viewport) ->
 
       @speed = Speeds.getSpeed('ship')
@@ -25,11 +27,14 @@ define [
       super()
       @moveInside()
 
+    goTo: (newX) ->
+      @x = newX
+      @moveInside()
+
     moveInside: ->
-      adj = 85
       if @viewport.isLeftOf(@)
         # TODO: force inside is broken
         @viewport.forceInside(@, 0)
-      if @x > Sprite::jaws.width - adj
-        @x = Sprite::jaws.width - adj
+      if @x > Sprite::jaws.width - @adj
+        @x = Sprite::jaws.width - @adj
 

@@ -5,7 +5,7 @@
     };
   };
 
-  define(['lodash', 'jaws', 'Ship', 'Planet', 'Star', 'GameOver', 'Bullet', 'Explosion', 'jquery'], function (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion, $) {
+  define(['lodash', 'jaws', 'Ship', 'Planet', 'Star', 'GameOver', 'Bullet', 'Explosion'], function (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion) {
     var GameEngine;
     return GameEngine = (function () {
 
@@ -15,6 +15,12 @@
         this.explosionCheck = __bind(this.explosionCheck, this);
 
         this.isOutside = __bind(this.isOutside, this);
+
+        this.onTouchStop = __bind(this.onTouchStop, this);
+
+        this.onTouchMove = __bind(this.onTouchMove, this);
+
+        this.onTouchStart = __bind(this.onTouchStart, this);
 
       }
 
@@ -34,12 +40,48 @@
           'x': jaws.width / 2,
           'y': jaws.height - 225
         }, this.viewport);
-        this.swiping = false;
-        this.tapping = false;
+        this.currentX = false;
+        this.addTouchListeners();
         this.planets = new jaws.SpriteList;
         this.stars = new jaws.SpriteList;
         this.bullets = new jaws.SpriteList;
         return this.explosions = new jaws.SpriteList;
+      };
+
+      GameEngine.prototype.addTouchListeners = function () {
+        var body;
+        body = document.body;
+        body.addEventListener('touchstart', this.onTouchStart, false);
+        body.addEventListener('touchmove', this.onTouchMove, false);
+        return body.addEventListener('touchend', this.onTouchStop, false);
+      };
+
+      GameEngine.prototype.onTouchStart = function (event) {
+        if (this.multiFinger(event)) {
+          return;
+        }
+        event.preventDefault();
+        return this.currentX = event.touches[0].pageX;
+      };
+
+      GameEngine.prototype.onTouchMove = function (event) {
+        if (this.multiFinger(event)) {
+          return;
+        }
+        event.preventDefault();
+        return this.currentX = event.touches[0].pageX;
+      };
+
+      GameEngine.prototype.onTouchStop = function (event) {
+        if (this.multiFinger(event)) {
+          return;
+        }
+        event.preventDefault();
+        return this.currentX = false;
+      };
+
+      GameEngine.prototype.multiFinger = function (event) {
+        return event.touches.length > 1 || (event.scale && event.scale === !1);
       };
 
       GameEngine.prototype.update = function () {
@@ -62,14 +104,18 @@
       };
 
       GameEngine.prototype.handlePlayerInput = function () {
-        if (jaws.pressed("left") || (this.swiping === 'left')) {
+        if (jaws.pressed("left")) {
           this.ship.moveLeft();
         }
-        if (jaws.pressed("right") || (this.swiping === 'right')) {
+        if (jaws.pressed("right")) {
           this.ship.moveRight();
         }
-        if (jaws.pressed("space") || this.swiping || this.tapping) {
-          return this.shoot();
+        if (jaws.pressed("space")) {
+          this.shoot();
+        }
+        if (this.currentX > 0) {
+          this.shoot();
+          return this.ship.goTo(this.currentX);
         }
       };
 

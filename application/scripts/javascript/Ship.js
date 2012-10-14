@@ -19,6 +19,8 @@
 
       __extends(Ship, _super);
 
+      Ship.adj = 85;
+
       function Ship(position, viewport) {
         this.viewport = viewport;
         this.speed = Speeds.getSpeed('ship');
@@ -39,14 +41,17 @@
         return this.moveInside();
       };
 
+      Ship.prototype.goTo = function (newX) {
+        this.x = newX;
+        return this.moveInside();
+      };
+
       Ship.prototype.moveInside = function () {
-        var adj;
-        adj = 85;
         if (this.viewport.isLeftOf(this)) {
           this.viewport.forceInside(this, 0);
         }
-        if (this.x > Sprite.prototype.jaws.width - adj) {
-          return this.x = Sprite.prototype.jaws.width - adj;
+        if (this.x > Sprite.prototype.jaws.width - this.adj) {
+          return this.x = Sprite.prototype.jaws.width - this.adj;
         }
       };
 

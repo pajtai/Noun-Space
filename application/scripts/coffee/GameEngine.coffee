@@ -7,9 +7,8 @@ define [
   'GameOver'
   'Bullet'
   'Explosion'
-  'jquery'
 ]
-, (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion, $) ->
+, (_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion) ->
 
   # TODO: break jaws up into its individual mosules using AMD
   # TODO: remove MAGIC NUMBERS!!!!!
@@ -32,13 +31,44 @@ define [
         'y': jaws.height - 225
         , @viewport
 
-      @swiping = false
-      @tapping = false
+      @currentX = false
+      @addTouchListeners()
 
       @planets = new jaws.SpriteList
       @stars = new jaws.SpriteList
       @bullets = new jaws.SpriteList
       @explosions = new jaws.SpriteList
+
+    addTouchListeners: ->
+
+      body = document.body
+
+      body.addEventListener('touchstart', @onTouchStart, false);
+      body.addEventListener('touchmove', @onTouchMove, false);
+      body.addEventListener('touchend', @onTouchStop, false);
+
+    onTouchStart: (event) =>
+      return if @multiFinger(event)
+      event.preventDefault()
+
+      @currentX = event.touches[0].pageX
+
+
+    onTouchMove: (event) =>
+      return if @multiFinger(event)
+      event.preventDefault()
+
+      @currentX = event.touches[0].pageX
+
+
+    onTouchStop: (event) =>
+      return if @multiFinger(event)
+      event.preventDefault()
+
+      @currentX = false
+
+    multiFinger: (event) ->
+      return (event.touches.length > 1 or (event.scale and event.scale is not 1))
 
     update: ->
       # make random number only once per update
@@ -58,12 +88,16 @@ define [
       @explosions.draw()
 
     handlePlayerInput: ->
-      if(jaws.pressed("left") or (@swiping == 'left'))
+      if(jaws.pressed("left"))
         @ship.moveLeft()
-      if(jaws.pressed("right") or (@swiping == 'right'))
+      if(jaws.pressed("right"))
         @ship.moveRight()
-      if(jaws.pressed("space") or @swiping or @tapping)
+      if(jaws.pressed("space"))
         @shoot()
+      if(@currentX > 0)
+        @shoot()
+        @ship.goTo(@currentX)
+
 
     shoot: ->
       return if not @canShoot

@@ -7,9 +7,8 @@
   <span class="s1">&#39;GameOver&#39;</span>
   <span class="s1">&#39;Bullet&#39;</span>
   <span class="s1">&#39;Explosion&#39;</span>
-  <span class="s1">&#39;jquery&#39;</span>
 <span class="p">]</span>
-<span class="p">,</span> <span class="nf">(_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion, $) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>TODO: break jaws up into its individual mosules using AMD
+<span class="p">,</span> <span class="nf">(_, jaws, Ship, Planet, Star, GameOver, Bullet, Explosion) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>TODO: break jaws up into its individual mosules using AMD
 TODO: remove MAGIC NUMBERS!!!!!
 TODO: set better detection rectangle for spaceship and planets</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">class</span> <span class="nx">GameEngine</span>
 
@@ -27,13 +26,44 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
         <span class="s1">&#39;y&#39;</span><span class="o">:</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="mi">225</span>
         <span class="p">,</span> <span class="nx">@viewport</span>
 
-      <span class="vi">@swiping = </span><span class="kc">false</span>
-      <span class="vi">@tapping = </span><span class="kc">false</span>
+      <span class="vi">@currentX = </span><span class="kc">false</span>
+      <span class="nx">@addTouchListeners</span><span class="p">()</span>
 
       <span class="vi">@planets = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
       <span class="vi">@stars = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
       <span class="vi">@bullets = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
       <span class="vi">@explosions = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
+
+    <span class="nv">addTouchListeners: </span><span class="o">-&gt;</span>
+
+      <span class="nv">body = </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span>
+
+      <span class="nx">body</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;touchstart&#39;</span><span class="p">,</span> <span class="nx">@onTouchStart</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+      <span class="nx">body</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;touchmove&#39;</span><span class="p">,</span> <span class="nx">@onTouchMove</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+      <span class="nx">body</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;touchend&#39;</span><span class="p">,</span> <span class="nx">@onTouchStop</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="nv">onTouchStart: </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+      <span class="vi">@currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
+
+
+    <span class="nv">onTouchMove: </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+      <span class="vi">@currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
+
+
+    <span class="nv">onTouchStop: </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+      <span class="vi">@currentX = </span><span class="kc">false</span>
+
+    <span class="nv">multiFinger: </span><span class="nf">(event) -&gt;</span>
+      <span class="k">return</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">or</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">scale</span> <span class="o">and</span> <span class="nx">event</span><span class="p">.</span><span class="nx">scale</span> <span class="o">is</span> <span class="o">not</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="nv">update: </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>make random number only once per update</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">rand = </span><span class="nx">_</span><span class="p">.</span><span class="nx">random</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
       <span class="nx">@handlePlayerInput</span><span class="p">()</span>
@@ -51,12 +81,16 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nx">@explosions</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
 
     <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">))</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">))</span>
         <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">()</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">))</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">))</span>
         <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">()</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;space&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="nx">@swiping</span> <span class="o">or</span> <span class="nx">@tapping</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;space&quot;</span><span class="p">))</span>
         <span class="nx">@shoot</span><span class="p">()</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">@currentX</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="nx">@shoot</span><span class="p">()</span>
+        <span class="nx">@ship</span><span class="p">.</span><span class="nx">goTo</span><span class="p">(</span><span class="nx">@currentX</span><span class="p">)</span>
+
 
     <span class="nv">shoot: </span><span class="o">-&gt;</span>
       <span class="k">return</span> <span class="k">if</span> <span class="o">not</span> <span class="nx">@canShoot</span>
