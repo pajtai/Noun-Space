@@ -28,10 +28,9 @@
       <span class="nx">@moveInside</span><span class="p">()</span>
 
     <span class="nv">goTo: </span><span class="nf">(newX) -&gt;</span>
-      <span class="vi">@x = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">max</span> <span class="nx">newX</span><span class="p">,</span> <span class="nx">Sprite</span><span class="o">::</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">@adj</span>
+      <span class="vi">@x = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">min</span> <span class="nx">newX</span><span class="p">,</span> <span class="nx">Sprite</span><span class="o">::</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">@adj</span>
 
     <span class="nv">moveInside: </span><span class="o">-&gt;</span>
-      <span class="nv">adj = </span><span class="mi">85</span>
       <span class="k">if</span> <span class="nx">@viewport</span><span class="p">.</span><span class="nx">isLeftOf</span><span class="p">(</span><span class="err">@</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>TODO: force inside is broken</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@viewport</span><span class="p">.</span><span class="nx">forceInside</span><span class="p">(</span><span class="err">@</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
       <span class="k">if</span> <span class="nx">@x</span> <span class="o">&gt;</span> <span class="nx">Sprite</span><span class="o">::</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">@adj</span>
         <span class="vi">@x = </span><span class="nx">Sprite</span><span class="o">::</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="nx">@adj</span>
