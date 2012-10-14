@@ -56,18 +56,23 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nv">$touchArea = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
       <span class="nv">$writeArea = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#credits&#39;</span><span class="p">)</span>
 
-      <span class="nv">beginTouch  = </span><span class="s1">&#39;touchstart mousedown&#39;</span>
-      <span class="nv">endTouch    = </span><span class="s1">&#39;touchend mouseup touchcancel&#39;</span>
-      <span class="nv">touching    = </span><span class="s1">&#39;touchmove mousemove&#39;</span>
+      <span class="nv">beginTouch  = </span><span class="s1">&#39;touchstart&#39;</span>
+      <span class="nv">endTouch    = </span><span class="s1">&#39;touchend touchcancel&#39;</span>
+      <span class="nv">touching    = </span><span class="s1">&#39;touchmove&#39;</span>
 
       <span class="nv">touchStarted = </span><span class="kc">false</span>
-
       <span class="nv">currentX = cachedX = </span><span class="mi">0</span>
 
       <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">beginTouch</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
 
+        <span class="nv">numberFingers = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">.</span><span class="nx">length</span>
+        <span class="k">if</span> <span class="nx">numberFingers</span> <span class="o">&gt;</span> <span class="mi">1</span>
+          <span class="nv">touchStarted = </span><span class="kc">false</span>
+          <span class="k">return</span>
+
         <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-        <span class="nv">cachedX = </span> <span class="nx">event</span><span class="p">.</span><span class="nx">targetTouches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
+
+        <span class="nv">cachedX = </span> <span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
         <span class="nv">touchStarted = </span><span class="kc">true</span>
         <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Touch started&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
           <span class="nv">currentX = </span> <span class="nx">event</span><span class="p">.</span><span class="nx">targetTouches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
@@ -79,26 +84,33 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
             <span class="p">,</span> <span class="mi">250</span>
         <span class="p">,</span> <span class="mi">200</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">endTouch</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
 
+        <span class="nv">numberFingers = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">.</span><span class="nx">length</span>
+        <span class="k">if</span> <span class="nx">numberFingers</span> <span class="o">&gt;</span> <span class="mi">1</span>
+          <span class="nv">touchStarted = </span><span class="kc">false</span>
+          <span class="k">return</span>
+
         <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
         <span class="vi">@swiping = </span><span class="nv">touchStarted = </span><span class="kc">false</span>
         <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Over - Touch ended&#39;</span>
 
-      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">touching</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> 
+      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">touching</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
+
+        <span class="nv">numberFingers = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">.</span><span class="nx">length</span>
+        <span class="k">if</span> <span class="nx">numberFingers</span> <span class="o">&gt;</span> <span class="mi">1</span>
+          <span class="nv">touchStarted = </span><span class="kc">false</span>
+          <span class="k">return</span>
 
         <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="nx">touchStarted</span>
-          <span class="nv">currentX = </span> <span class="nx">event</span><span class="p">.</span><span class="nx">targetTouches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
+          <span class="nv">currentX = </span> <span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
           <span class="k">if</span> <span class="nx">currentX</span> <span class="o">-</span> <span class="nx">cachedX</span> <span class="o">&gt;</span> <span class="mi">0</span>
             <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s2">&quot;r #{currentX} - #{cachedX}&quot;</span>
             <span class="vi">@swiping = </span><span class="s1">&#39;right&#39;</span>
           <span class="k">else</span> <span class="k">if</span> <span class="nx">currentX</span> <span class="o">-</span> <span class="nx">cachedX</span> <span class="o">&lt;</span> <span class="mi">0</span>
             <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s2">&quot;l #{currentX} - #{cachedX}&quot;</span>
-            <span class="vi">@swiping = </span><span class="s1">&#39;left&#39;</span>
-
-          <span class="nv">cachedX = </span><span class="nx">currentX</span>
-
-
-    <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
+            <span class="vi">@swiping = </span><span class="s1">&#39;left&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>cachedX = currentX</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">))</span>
         <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">()</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">))</span>
