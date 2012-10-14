@@ -34,6 +34,17 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="vi">@bullets = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
       <span class="vi">@explosions = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
 
+      <span class="vi">@textLocation = </span><span class="mi">180</span>
+
+    <span class="nv">showInstructions: </span><span class="o">-&gt;</span>
+      <span class="nv">jaws.context.font = </span><span class="s2">&quot;bold 60pt terminal&quot;</span>
+      <span class="nv">jaws.context.lineWidth = </span><span class="mi">10</span>
+      <span class="nv">jaws.context.fillStyle = </span><span class="s2">&quot;Green&quot;</span>
+      <span class="nv">jaws.context.strokeStyle = </span> <span class="s2">&quot;rgba(200,200,200,0.0)&quot;</span>
+      <span class="nx">jaws</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="s2">&quot;Arrow keys and space&quot;</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="nx">@textLocation</span><span class="p">)</span>
+      <span class="nx">jaws</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="s2">&quot;or swipe with touch&quot;</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="nx">@textLocation</span> <span class="o">+</span> <span class="mi">100</span><span class="p">)</span>
+      <span class="o">++</span><span class="nx">@textLocation</span>
+
     <span class="nv">addTouchListeners: </span><span class="o">-&gt;</span>
 
       <span class="nv">body = </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span>
@@ -79,6 +90,8 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nx">@stars</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
       <span class="nx">@bullets</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
       <span class="nx">@explosions</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
+      <span class="k">if</span> <span class="nx">@textLocation</span> <span class="o">&lt;</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">height</span>
+        <span class="nx">@showInstructions</span><span class="p">()</span>
 
     <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">))</span>
