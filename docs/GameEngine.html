@@ -81,9 +81,9 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
 
         <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
         <span class="vi">@swiping = </span><span class="nv">touchStarted = </span><span class="kc">false</span>
-        <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Touch ended&#39;</span>
+        <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Over - Touch ended&#39;</span>
 
-      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">touching</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">touching</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> 
 
         <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
         <span class="k">if</span> <span class="nx">touchStarted</span>
@@ -95,8 +95,8 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
             <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s2">&quot;l #{currentX} - #{cachedX}&quot;</span>
             <span class="vi">@swiping = </span><span class="s1">&#39;left&#39;</span>
 
+          <span class="nv">cachedX = </span><span class="nx">currentX</span>
 
-        <span class="nv">cachedX = </span><span class="nx">currentX</span>
 
     <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">))</span>
