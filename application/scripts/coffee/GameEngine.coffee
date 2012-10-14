@@ -34,6 +34,7 @@ define [
         , @viewport
 
       @swiping = false
+      @tapping = false
 
       @planets = new jaws.SpriteList
       @stars = new jaws.SpriteList
@@ -59,50 +60,60 @@ define [
 
     bindSwipe: ->
 
-      maxTime = 1000
-      maxDistance = 50
+      $touchArea = $('body')
+      $writeArea = $('#credits')
 
+      beginTouch  = 'touchstart mousedown'
+      endTouch    = 'touchend mouseup touchcancel'
+      touching    = 'touchmove mousemove'
 
-      startX = 0
-      startTime = 0
+      touchStarted = false
 
+      currentX = cachedX = 0
 
-      target = $('body')
+      $touchArea.on beginTouch, (event) =>
 
-      target.on 'touchstart mousedown', (e) ->
-        # prevent image drag (Firefox)
-        e.preventDefault()
-        startTime = e.timeStamp
-        startX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+        event.preventDefault()
+        cachedX = event.pageX
+        touchStarted = true
+        $writeArea.text 'Touch started'
 
-      target.on 'touchend mouseup touchcancel', (e) ->
-        startTime = 0
-        startX = 0
+        setTimeout =>
+          currentX = event.pageX
+          if cachedX is currentX and not touchStarted
+            $writeArea.text 'Tap'
+            @tapping = true
+            setTimeout =>
+              @tapping = false
+            , 250
+        , 200
 
-      target.on 'touchmove mousemove', (e) =>
-        e.preventDefault();
+      $touchArea.on endTouch, (event) =>
 
-        currentX = if e.originalEvent.touches then e.originalEvent.touches[0].pageX else e.pageX
+        event.preventDefault()
+        @swiping = touchStarted = false
+        $writeArea.text 'Touch ended'
 
-        direction = if (startX is 0) then 0 else (currentX - startX)
+      $touchArea.on touching, (event) =>
 
-        if direction > 0
-          @swiping = 'right'
+        event.preventDefault()
+        if touchStarted
+          currentX = event.pageX
+          if currentX - cachedX > 0
+            $writeArea.text 'Right'
+            @swiping = 'right'
+          else
+            $writeArea.text 'Left'
+            @swiping = 'left'
 
-        if direction < 0
-          @swiping = 'left'
-
-        if direction == 0
-          @swiping = false
-
-
+        cachedX = currentX
 
     handlePlayerInput: ->
       if(jaws.pressed("left") or (@swiping == 'left'))
         @ship.moveLeft()
       if(jaws.pressed("right") or (@swiping == 'right'))
         @ship.moveRight()
-      if(jaws.pressed("space") or @swiping)
+      if(jaws.pressed("space") or @swiping or @tapping)
         @shoot()
 
     shoot: ->

@@ -36,6 +36,7 @@
           'y': jaws.height - 225
         }, this.viewport);
         this.swiping = false;
+        this.tapping = false;
         this.planets = new jaws.SpriteList;
         this.stars = new jaws.SpriteList;
         this.bullets = new jaws.SpriteList;
@@ -62,35 +63,48 @@
       };
 
       GameEngine.prototype.bindSwipe = function () {
-        var maxDistance, maxTime, startTime, startX, target, _this = this;
-        maxTime = 1000;
-        maxDistance = 50;
-        startX = 0;
-        startTime = 0;
-        target = $('body');
-        target.on('touchstart mousedown', function (e) {
-          e.preventDefault();
-          startTime = e.timeStamp;
-          return startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+        var $touchArea, $writeArea, beginTouch, cachedX, currentX, endTouch, touchStarted, touching, _this = this;
+        $touchArea = $('body');
+        $writeArea = $('#credits');
+        beginTouch = 'touchstart mousedown';
+        endTouch = 'touchend mouseup touchcancel';
+        touching = 'touchmove mousemove';
+        touchStarted = false;
+        currentX = cachedX = 0;
+        $touchArea.on(beginTouch, function (event) {
+          event.preventDefault();
+          cachedX = event.pageX;
+          touchStarted = true;
+          $writeArea.text('Touch started');
+          return setTimeout(function () {
+            currentX = event.pageX;
+            if (cachedX === currentX && !touchStarted) {
+              $writeArea.text('Tap');
+              _this.tapping = true;
+              return setTimeout(function () {
+                return _this.tapping = false;
+              }, 250);
+            }
+          }, 200);
         });
-        target.on('touchend mouseup touchcancel', function (e) {
-          startTime = 0;
-          return startX = 0;
+        $touchArea.on(endTouch, function (event) {
+          event.preventDefault();
+          _this.swiping = touchStarted = false;
+          return $writeArea.text('Touch ended');
         });
-        return target.on('touchmove mousemove', function (e) {
-          var currentX, direction;
-          e.preventDefault();
-          currentX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
-          direction = startX === 0 ? 0 : currentX - startX;
-          if (direction > 0) {
-            _this.swiping = 'right';
+        return $touchArea.on(touching, function (event) {
+          event.preventDefault();
+          if (touchStarted) {
+            currentX = event.pageX;
+            if (currentX - cachedX > 0) {
+              $writeArea.text('Right');
+              _this.swiping = 'right';
+            } else {
+              $writeArea.text('Left');
+              _this.swiping = 'left';
+            }
           }
-          if (direction < 0) {
-            _this.swiping = 'left';
-          }
-          if (direction === 0) {
-            return _this.swiping = false;
-          }
+          return cachedX = currentX;
         });
       };
 
@@ -101,7 +115,7 @@
         if (jaws.pressed("right") || (this.swiping === 'right')) {
           this.ship.moveRight();
         }
-        if (jaws.pressed("space") || this.swiping) {
+        if (jaws.pressed("space") || this.swiping || this.tapping) {
           return this.shoot();
         }
       };

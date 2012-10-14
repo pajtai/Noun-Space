@@ -29,6 +29,7 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
         <span class="p">,</span> <span class="nx">@viewport</span>
 
       <span class="vi">@swiping = </span><span class="kc">false</span>
+      <span class="vi">@tapping = </span><span class="kc">false</span>
 
       <span class="vi">@planets = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
       <span class="vi">@stars = </span><span class="k">new</span> <span class="nx">jaws</span><span class="p">.</span><span class="nx">SpriteList</span>
@@ -52,48 +53,60 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
 
     <span class="nv">bindSwipe: </span><span class="o">-&gt;</span>
 
-      <span class="nv">maxTime = </span><span class="mi">1000</span>
-      <span class="nv">maxDistance = </span><span class="mi">50</span>
+      <span class="nv">$touchArea = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
+      <span class="nv">$writeArea = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#credits&#39;</span><span class="p">)</span>
 
+      <span class="nv">beginTouch  = </span><span class="s1">&#39;touchstart mousedown&#39;</span>
+      <span class="nv">endTouch    = </span><span class="s1">&#39;touchend mouseup touchcancel&#39;</span>
+      <span class="nv">touching    = </span><span class="s1">&#39;touchmove mousemove&#39;</span>
 
-      <span class="nv">startX = </span><span class="mi">0</span>
-      <span class="nv">startTime = </span><span class="mi">0</span>
+      <span class="nv">touchStarted = </span><span class="kc">false</span>
 
+      <span class="nv">currentX = cachedX = </span><span class="mi">0</span>
 
-      <span class="nv">target = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
+      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">beginTouch</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
 
-      <span class="nx">target</span><span class="p">.</span><span class="kc">on</span> <span class="s1">&#39;touchstart mousedown&#39;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>prevent image drag (Firefox)</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-        <span class="nv">startTime = </span><span class="nx">e</span><span class="p">.</span><span class="nx">timeStamp</span>
-        <span class="nv">startX = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span> <span class="k">else</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        <span class="nv">cachedX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span>
+        <span class="nv">touchStarted = </span><span class="kc">true</span>
+        <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Touch started&#39;</span>
 
-      <span class="nx">target</span><span class="p">.</span><span class="kc">on</span> <span class="s1">&#39;touchend mouseup touchcancel&#39;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
-        <span class="nv">startTime = </span><span class="mi">0</span>
-        <span class="nv">startX = </span><span class="mi">0</span>
+        <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
+          <span class="nv">currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span>
+          <span class="k">if</span> <span class="nx">cachedX</span> <span class="o">is</span> <span class="nx">currentX</span> <span class="o">and</span> <span class="o">not</span> <span class="nx">touchStarted</span>
+            <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Tap&#39;</span>
+            <span class="vi">@tapping = </span><span class="kc">true</span>
+            <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
+              <span class="vi">@tapping = </span><span class="kc">false</span>
+            <span class="p">,</span> <span class="mi">250</span>
+        <span class="p">,</span> <span class="mi">200</span>
 
-      <span class="nx">target</span><span class="p">.</span><span class="kc">on</span> <span class="s1">&#39;touchmove mousemove&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">endTouch</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
 
-        <span class="nv">currentX = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span> <span class="k">else</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        <span class="vi">@swiping = </span><span class="nv">touchStarted = </span><span class="kc">false</span>
+        <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Touch ended&#39;</span>
 
-        <span class="nv">direction = </span><span class="k">if</span> <span class="p">(</span><span class="nx">startX</span> <span class="o">is</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="nx">currentX</span> <span class="o">-</span> <span class="nx">startX</span><span class="p">)</span>
+      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">touching</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
 
-        <span class="k">if</span> <span class="nx">direction</span> <span class="o">&gt;</span> <span class="mi">0</span>
-          <span class="vi">@swiping = </span><span class="s1">&#39;right&#39;</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nx">touchStarted</span>
+          <span class="nv">currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span>
+          <span class="k">if</span> <span class="nx">currentX</span> <span class="o">-</span> <span class="nx">cachedX</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Right&#39;</span>
+            <span class="vi">@swiping = </span><span class="s1">&#39;right&#39;</span>
+          <span class="k">else</span>
+            <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Left&#39;</span>
+            <span class="vi">@swiping = </span><span class="s1">&#39;left&#39;</span>
 
-        <span class="k">if</span> <span class="nx">direction</span> <span class="o">&lt;</span> <span class="mi">0</span>
-          <span class="vi">@swiping = </span><span class="s1">&#39;left&#39;</span>
-
-        <span class="k">if</span> <span class="nx">direction</span> <span class="o">==</span> <span class="mi">0</span>
-          <span class="vi">@swiping = </span><span class="kc">false</span>
-
-
+        <span class="nv">cachedX = </span><span class="nx">currentX</span>
 
     <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">))</span>
         <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveLeft</span><span class="p">()</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">))</span>
         <span class="nx">@ship</span><span class="p">.</span><span class="nx">moveRight</span><span class="p">()</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;space&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="nx">@swiping</span><span class="p">)</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;space&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="nx">@swiping</span> <span class="o">or</span> <span class="nx">@tapping</span><span class="p">)</span>
         <span class="nx">@shoot</span><span class="p">()</span>
 
     <span class="nv">shoot: </span><span class="o">-&gt;</span>
