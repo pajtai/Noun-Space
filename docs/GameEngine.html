@@ -47,14 +47,14 @@ return if not this.element.addEventListener?</p>             </td>             <
       <span class="nx">body</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;touchend&#39;</span><span class="p">,</span> <span class="nx">@onTouchStop</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 
     <span class="nv">onTouchStart: </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
-      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">()</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
       <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
 
       <span class="vi">@touching = </span><span class="kc">true</span>
       <span class="vi">@cachedX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
 
     <span class="nv">onTouchMove: </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
-      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">()</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
       <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
 
       <span class="vi">@currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
@@ -70,7 +70,7 @@ return if not this.element.addEventListener?</p>             </td>             <
 
 
     <span class="nv">onTouchStop: </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
-      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">()</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">@multiFinger</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
       <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
 
       <span class="vi">@touching = </span><span class="kc">false</span>
