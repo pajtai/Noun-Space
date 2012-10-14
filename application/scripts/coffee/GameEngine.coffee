@@ -97,7 +97,7 @@ define [
       @stars.draw()
       @bullets.draw()
       @explosions.draw()
-      if @textLocation < jaws.height
+      if @textLocation < jaws.height and not @.noInstructions
         @showInstructions()
 
     handlePlayerInput: ->
@@ -178,6 +178,7 @@ define [
       jaws.collideOneWithMany(@ship, @planets).forEach (planet) =>
         planet.stop()
         @ship.stop()
+        GameEngine.prototype.noInstructions = true
         jaws.switchGameState GameOver
 
       jaws.collideManyWithMany(@bullets, @planets).forEach (pair) =>

@@ -112,7 +112,7 @@
         this.stars.draw();
         this.bullets.draw();
         this.explosions.draw();
-        if (this.textLocation < jaws.height) {
+        if (this.textLocation < jaws.height && !this.noInstructions) {
           return this.showInstructions();
         }
       };
@@ -213,6 +213,7 @@
         jaws.collideOneWithMany(this.ship, this.planets).forEach(function (planet) {
           planet.stop();
           _this.ship.stop();
+          GameEngine.prototype.noInstructions = true;
           return jaws.switchGameState(GameOver);
         });
         return jaws.collideManyWithMany(this.bullets, this.planets).forEach(function (pair) {
