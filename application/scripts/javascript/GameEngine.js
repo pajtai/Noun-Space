@@ -20,7 +20,6 @@
 
       GameEngine.prototype.setup = function () {
         jaws.preventDefaultKeys(["left", "right", "up", "down", "space"]);
-        this.bindSwipe();
         this.difficulty = 0;
         this.levelUp = 0;
         this.score = 0;
@@ -60,52 +59,6 @@
         this.stars.draw();
         this.bullets.draw();
         return this.explosions.draw();
-      };
-
-      GameEngine.prototype.bindSwipe = function () {
-        var $touchArea, $writeArea, beginTouch, cachedX, currentX, endTouch, touchStarted, touching, _this = this;
-        $touchArea = $('body');
-        $writeArea = $('#credits');
-        beginTouch = 'touchstart mousedown';
-        endTouch = 'touchend mouseup touchcancel';
-        touching = 'touchmove mousemove';
-        touchStarted = false;
-        currentX = cachedX = 0;
-        $touchArea.on(beginTouch, function (event) {
-          event.preventDefault();
-          cachedX = event.pageX;
-          touchStarted = true;
-          $writeArea.text('Touch started');
-          return setTimeout(function () {
-            currentX = event.pageX;
-            if (cachedX === currentX && !touchStarted) {
-              $writeArea.text('Tap');
-              _this.tapping = true;
-              return setTimeout(function () {
-                return _this.tapping = false;
-              }, 250);
-            }
-          }, 200);
-        });
-        $touchArea.on(endTouch, function (event) {
-          event.preventDefault();
-          _this.swiping = touchStarted = false;
-          return $writeArea.text('Touch ended');
-        });
-        return $touchArea.on(touching, function (event) {
-          event.preventDefault();
-          if (touchStarted) {
-            currentX = event.pageX;
-            if (currentX - cachedX > 0) {
-              $writeArea.text('Right');
-              _this.swiping = 'right';
-            } else {
-              $writeArea.text('Left');
-              _this.swiping = 'left';
-            }
-          }
-          return cachedX = currentX;
-        });
       };
 
       GameEngine.prototype.handlePlayerInput = function () {

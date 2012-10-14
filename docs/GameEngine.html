@@ -15,7 +15,6 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
 
     <span class="nv">setup: </span><span class="o">-&gt;</span>
       <span class="nx">jaws</span><span class="p">.</span><span class="nx">preventDefaultKeys</span><span class="p">([</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span> <span class="s2">&quot;space&quot;</span><span class="p">])</span>
-      <span class="nx">@bindSwipe</span><span class="p">()</span>
       <span class="vi">@difficulty = </span><span class="mi">0</span>
       <span class="vi">@levelUp = </span><span class="mi">0</span>
       <span class="vi">@score = </span><span class="mi">0</span>
@@ -50,56 +49,6 @@ TODO: set better detection rectangle for spaceship and planets</p>             <
       <span class="nx">@stars</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
       <span class="nx">@bullets</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
       <span class="nx">@explosions</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
-
-    <span class="nv">bindSwipe: </span><span class="o">-&gt;</span>
-
-      <span class="nv">$touchArea = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
-      <span class="nv">$writeArea = </span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#credits&#39;</span><span class="p">)</span>
-
-      <span class="nv">beginTouch  = </span><span class="s1">&#39;touchstart mousedown&#39;</span>
-      <span class="nv">endTouch    = </span><span class="s1">&#39;touchend mouseup touchcancel&#39;</span>
-      <span class="nv">touching    = </span><span class="s1">&#39;touchmove mousemove&#39;</span>
-
-      <span class="nv">touchStarted = </span><span class="kc">false</span>
-
-      <span class="nv">currentX = cachedX = </span><span class="mi">0</span>
-
-      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">beginTouch</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
-
-        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-        <span class="nv">cachedX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span>
-        <span class="nv">touchStarted = </span><span class="kc">true</span>
-        <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Touch started&#39;</span>
-
-        <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
-          <span class="nv">currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span>
-          <span class="k">if</span> <span class="nx">cachedX</span> <span class="o">is</span> <span class="nx">currentX</span> <span class="o">and</span> <span class="o">not</span> <span class="nx">touchStarted</span>
-            <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Tap&#39;</span>
-            <span class="vi">@tapping = </span><span class="kc">true</span>
-            <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
-              <span class="vi">@tapping = </span><span class="kc">false</span>
-            <span class="p">,</span> <span class="mi">250</span>
-        <span class="p">,</span> <span class="mi">200</span>
-
-      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">endTouch</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
-
-        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-        <span class="vi">@swiping = </span><span class="nv">touchStarted = </span><span class="kc">false</span>
-        <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Touch ended&#39;</span>
-
-      <span class="nx">$touchArea</span><span class="p">.</span><span class="kc">on</span> <span class="nx">touching</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span>
-
-        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nx">touchStarted</span>
-          <span class="nv">currentX = </span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span>
-          <span class="k">if</span> <span class="nx">currentX</span> <span class="o">-</span> <span class="nx">cachedX</span> <span class="o">&gt;</span> <span class="mi">0</span>
-            <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Right&#39;</span>
-            <span class="vi">@swiping = </span><span class="s1">&#39;right&#39;</span>
-          <span class="k">else</span>
-            <span class="nx">$writeArea</span><span class="p">.</span><span class="nx">text</span> <span class="s1">&#39;Left&#39;</span>
-            <span class="vi">@swiping = </span><span class="s1">&#39;left&#39;</span>
-
-        <span class="nv">cachedX = </span><span class="nx">currentX</span>
 
     <span class="nv">handlePlayerInput: </span><span class="o">-&gt;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">jaws</span><span class="p">.</span><span class="nx">pressed</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">@swiping</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">))</span>

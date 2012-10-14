@@ -18,7 +18,6 @@ define [
 
     setup: ->
       jaws.preventDefaultKeys(["left", "right", "up", "down", "space"])
-      @bindSwipe()
       @difficulty = 0
       @levelUp = 0
       @score = 0
@@ -57,56 +56,6 @@ define [
       @stars.draw()
       @bullets.draw()
       @explosions.draw()
-
-    bindSwipe: ->
-
-      $touchArea = $('body')
-      $writeArea = $('#credits')
-
-      beginTouch  = 'touchstart mousedown'
-      endTouch    = 'touchend mouseup touchcancel'
-      touching    = 'touchmove mousemove'
-
-      touchStarted = false
-
-      currentX = cachedX = 0
-
-      $touchArea.on beginTouch, (event) =>
-
-        event.preventDefault()
-        cachedX = event.pageX
-        touchStarted = true
-        $writeArea.text 'Touch started'
-
-        setTimeout =>
-          currentX = event.pageX
-          if cachedX is currentX and not touchStarted
-            $writeArea.text 'Tap'
-            @tapping = true
-            setTimeout =>
-              @tapping = false
-            , 250
-        , 200
-
-      $touchArea.on endTouch, (event) =>
-
-        event.preventDefault()
-        @swiping = touchStarted = false
-        $writeArea.text 'Touch ended'
-
-      $touchArea.on touching, (event) =>
-
-        event.preventDefault()
-        if touchStarted
-          currentX = event.pageX
-          if currentX - cachedX > 0
-            $writeArea.text 'Right'
-            @swiping = 'right'
-          else
-            $writeArea.text 'Left'
-            @swiping = 'left'
-
-        cachedX = currentX
 
     handlePlayerInput: ->
       if(jaws.pressed("left") or (@swiping == 'left'))
