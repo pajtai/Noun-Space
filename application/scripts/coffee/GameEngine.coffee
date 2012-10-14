@@ -39,6 +39,17 @@ define [
       @bullets = new jaws.SpriteList
       @explosions = new jaws.SpriteList
 
+      @textLocation = 180
+
+    showInstructions: ->
+      jaws.context.font = "bold 60pt terminal"
+      jaws.context.lineWidth = 10
+      jaws.context.fillStyle = "Green"
+      jaws.context.strokeStyle =  "rgba(200,200,200,0.0)"
+      jaws.context.fillText("Arrow keys and space", 60, @textLocation)
+      jaws.context.fillText("or swipe with touch", 60, @textLocation + 100)
+      ++@textLocation
+
     addTouchListeners: ->
 
       body = document.body
@@ -86,6 +97,8 @@ define [
       @stars.draw()
       @bullets.draw()
       @explosions.draw()
+      if @textLocation < jaws.height
+        @showInstructions()
 
     handlePlayerInput: ->
       if(jaws.pressed("left"))

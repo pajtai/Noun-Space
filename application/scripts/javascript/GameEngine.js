@@ -45,7 +45,18 @@
         this.planets = new jaws.SpriteList;
         this.stars = new jaws.SpriteList;
         this.bullets = new jaws.SpriteList;
-        return this.explosions = new jaws.SpriteList;
+        this.explosions = new jaws.SpriteList;
+        return this.textLocation = 180;
+      };
+
+      GameEngine.prototype.showInstructions = function () {
+        jaws.context.font = "bold 60pt terminal";
+        jaws.context.lineWidth = 10;
+        jaws.context.fillStyle = "Green";
+        jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+        jaws.context.fillText("Arrow keys and space", 60, this.textLocation);
+        jaws.context.fillText("or swipe with touch", 60, this.textLocation + 100);
+        return ++this.textLocation;
       };
 
       GameEngine.prototype.addTouchListeners = function () {
@@ -100,7 +111,10 @@
         this.planets.draw();
         this.stars.draw();
         this.bullets.draw();
-        return this.explosions.draw();
+        this.explosions.draw();
+        if (this.textLocation < jaws.height) {
+          return this.showInstructions();
+        }
       };
 
       GameEngine.prototype.handlePlayerInput = function () {
