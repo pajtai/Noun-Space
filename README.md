@@ -8,7 +8,7 @@ _Peter Ajtai - [MIT Licencse](https://raw.github.com/pajtai/Noun-Space/master/MI
 (Seems to work smoothest in Chrome)
 
 Straight forward space shooter using (rasterized) icons from [The Noun Project](http://thenounproject.com/)...
-originally it was going to be with vectors, but that proved too slows, so now it is rasterized and on canvas.
+originally it was going to be with vectors, but that proved too slow, so now it on canvas.
 
 Mobile is supported
 
