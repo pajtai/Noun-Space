@@ -14,7 +14,7 @@ Mobile is supported
 
 Made using:
 
-* [jaw](http://jawsjs.com/)
+* [jaws](http://jawsjs.com/)
 * [requirejs](http://requirejs.org)
 * [gruntjs](http://gruntjs.com)
 * [coffeescript](http://coffeescript.org/)
