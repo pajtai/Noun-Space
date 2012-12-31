@@ -1,0 +1,28 @@
+<!DOCTYPE html>  <html> <head>   <title>Explosion.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="Bullet.html">                 Bullet.coffee               </a>                                           <a class="source" href="Explosion.html">                 Explosion.coffee               </a>                                           <a class="source" href="GameEngine.html">                 GameEngine.coffee               </a>                                           <a class="source" href="GameOver.html">                 GameOver.coffee               </a>                                           <a class="source" href="Planet.html">                 Planet.coffee               </a>                                           <a class="source" href="Ship.html">                 Ship.coffee               </a>                                           <a class="source" href="SpeedPass.html">                 SpeedPass.coffee               </a>                                           <a class="source" href="Sprite.html">                 Sprite.coffee               </a>                                           <a class="source" href="Star.html">                 Star.coffee               </a>                                           <a class="source" href="main.html">                 main.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               Explosion.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">define</span> <span class="p">[</span>
+  <span class="s1">&#39;Sprite&#39;</span>
+  <span class="s1">&#39;SpeedPass&#39;</span>
+<span class="p">]</span>
+<span class="p">,</span> <span class="nf">(Sprite, Speeds) -&gt;</span>
+
+  <span class="k">class</span> <span class="nx">Explosion</span> <span class="k">extends</span> <span class="nx">Sprite</span>
+
+    <span class="nv">constructor: </span><span class="nf">(position) -&gt;</span>
+
+      <span class="vi">@progress = </span><span class="mi">0</span>
+      <span class="vi">@speed = </span><span class="nx">Speeds</span><span class="p">.</span><span class="nx">getSpeed</span><span class="p">(</span><span class="s1">&#39;bullet&#39;</span><span class="p">)</span>
+
+      <span class="k">super</span>
+        <span class="s1">&#39;image&#39;</span> <span class="o">:</span> <span class="s1">&#39;img/explosion.png&#39;</span>
+        <span class="s1">&#39;x&#39;</span>           <span class="o">:</span> <span class="nx">position</span><span class="p">.</span><span class="nx">x</span>
+        <span class="s1">&#39;y&#39;</span>           <span class="o">:</span> <span class="nx">position</span><span class="p">.</span><span class="nx">y</span>
+
+      <span class="vi">@selfScale = </span><span class="mf">0.5</span>
+      <span class="nx">@scale</span><span class="p">(</span><span class="nx">@selfScale</span><span class="p">)</span>
+
+    <span class="nv">moveIt: </span><span class="o">-&gt;</span>
+      <span class="nx">@alpha</span> <span class="o">-=</span> <span class="mf">0.01</span>
+
+    <span class="nv">removeMe: </span><span class="o">-&gt;</span>
+      <span class="nx">@alpha</span> <span class="o">&lt;</span> <span class="mi">0</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
